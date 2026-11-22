@@ -2,44 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#09090b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Entreno Minimal" />
-  <title>Entreno Minimal</title>
-  <link id="pwa-manifest-link" rel="manifest" href="" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Entreno Minimal v2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Design tokens and custom styles for Entreno Minimal */
     :root {
       --bg: #09090b;
       --surface: #121216;
       --surface-2: #18181d;
       --surface-3: #222229;
       --border: #27272e;
-      --border-soft: #1e1e24;
       --text: #f4f4f6;
-      --text-muted: #9a9aa6;
-      --text-dim: #666672;
+      --muted: #9a9aa6;
       --accent: #22c55e;
       --accent-hover: #16a34a;
       --accent-inv: #052e16;
-      --success: #22c55e;
-      --success-bg: rgba(34, 197, 94, 0.14);
       --danger: #ef4444;
-      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-bg: rgba(239, 68, 68, 0.14);
       --radius-lg: 18px;
       --radius-md: 12px;
       --radius-sm: 9px;
-      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
@@ -49,157 +41,56 @@
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: var(--font-sans);
+      font-family: var(--font);
       min-height: 100dvh;
       overflow-x: hidden;
     }
 
-    button, input, select {
-      font-family: inherit;
-      color: inherit;
-    }
-
-    /* Hide native number spinners for clean mobile numeric entry */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 560px;
+    .app {
+      max-width: 680px;
       margin: 0 auto;
-      min-height: 100dvh;
-      padding: 16px 14px 108px;
+      padding: 16px 14px 96px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    .top-header {
+    .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 4px 2px;
+      flex-wrap: wrap;
     }
 
-    .brand-block {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-
-    .brand-title {
-      font-size: 18px;
+    .title-wrap h1 {
+      margin: 0;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .session-pill {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text);
-      background: var(--surface-2);
-      border: 1px solid var(--border);
+    .badge {
+      font-size: 0.72rem;
       padding: 2px 8px;
       border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
     }
 
-    .brand-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .sub {
+      margin: 3px 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
     }
 
     .header-actions {
       display: flex;
-      align-items: center;
       gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .goal-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 8px 11px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      cursor: pointer;
-      transition: border-color 0.15s ease, background 0.15s ease;
-      min-width: 112px;
-    }
-
-    .goal-btn:hover {
-      border-color: #3d3d48;
-      background: var(--surface-2);
-    }
-
-    .goal-btn-top {
-      display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .goal-btn-count {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .goal-bar-track {
-      width: 100%;
-      height: 4px;
-      background: var(--surface-3);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .goal-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--accent);
-      border-radius: 999px;
-      transition: width 0.25s ease, background 0.25s ease;
-    }
-
-    .goal-bar-fill.complete {
-      background: var(--success);
-    }
-
-    .ghost-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 10px 11px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-    }
-
-    .ghost-btn:hover {
-      color: var(--text);
-      border-color: #3d3d48;
-      background: var(--surface-2);
     }
 
     .card {
@@ -207,2980 +98,692 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 14px;
-    }
-
-    .meta-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 10px;
-    }
-
-    .field-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 12px;
+      min-width: 0;
     }
 
-    .field-group.full {
-      grid-column: 1 / -1;
-    }
-
-    .field-label {
-      font-size: 11px;
+    .card-title {
+      font-size: 0.72rem;
       font-weight: 600;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      color: var(--muted);
+      margin: 0;
     }
 
-    .input-box {
-      width: 100%;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 11px;
-      font-size: 14px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s ease;
-    }
-
-    .input-box:focus {
-      border-color: var(--accent);
-    }
-
-    .segmented {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 3px;
-      gap: 3px;
-    }
-
-    .seg-btn {
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      padding: 9px 8px;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease;
-    }
-
-    .seg-btn.active {
-      background: var(--accent);
-      color: var(--accent-inv);
-    }
-
-    .quick-weight-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .quick-weight-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .quick-weight-btn {
-      background: var(--surface-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-    }
-
-    .quick-weight-btn:hover {
-      background: var(--accent);
-      color: var(--accent-inv);
-      border-color: var(--accent);
-    }
-
-    .routine-header-row {
+    .row-between {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 10px;
       flex-wrap: wrap;
     }
 
-    .mode-badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text-muted);
-    }
-
-    .mode-badge.manual {
-      color: var(--text);
-      border-color: #4b4b58;
-      background: var(--surface-3);
-    }
-
-    .auto-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: color 0.15s ease, border-color 0.15s ease;
-    }
-
-    .auto-btn:hover {
-      color: var(--text);
-      border-color: #52525e;
-    }
-
-    .routine-tabs-scroll {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-      scrollbar-width: none;
-    }
-
-    .routine-tabs-scroll::-webkit-scrollbar {
-      display: none;
-    }
-
-    .routine-tab {
-      flex: 1 0 auto;
-      min-width: 112px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 10px;
-      text-align: center;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      transition: all 0.15s ease;
-    }
-
-    .routine-tab .rt-name {
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-
-    .routine-tab .rt-sub {
-      font-size: 10px;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .routine-tab.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--accent-inv);
-    }
-
-    .routine-tab.active .rt-sub {
-      color: var(--accent-inv);
-      font-weight: 700;
-    }
-
-    .exercises-list {
-      display: flex;
-      flex-direction: column;
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
 
-    .exercise-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 14px;
+    @media (max-width: 520px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .field {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-
-    .exercise-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .exercise-title {
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .autofill-tag {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .add-set-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 7px 11px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .add-set-btn:hover {
-      background: var(--surface-3);
-    }
-
-    .sets-header {
-      display: grid;
-      grid-template-columns: 28px 1fr 1fr 62px auto;
       gap: 6px;
-      padding: 0 2px;
-      font-size: 10px;
-      font-weight: 700;
+      min-width: 0;
+    }
+
+    .field label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      color: var(--text-dim);
-      align-items: center;
     }
 
-    .set-row {
-      display: grid;
-      grid-template-columns: 28px 1fr 1fr 62px auto;
-      gap: 6px;
-      align-items: center;
-      background: var(--surface-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 6px;
-    }
-
-    .set-num {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    .set-input {
+    input[type="date"],
+    input[type="number"],
+    input[type="text"],
+    select {
       width: 100%;
-      background: var(--surface);
+      max-width: 100%;
+      min-width: 0;
+      height: 44px;
+      padding: 0 12px;
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 8px 6px;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
+      border-radius: var(--radius-md);
       color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
       outline: none;
     }
 
-    .set-input:focus {
-      border-color: var(--accent);
-    }
-
-    .gear-group {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .gear-chip {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 7px 6px;
-      border-radius: 7px;
-      cursor: pointer;
-      line-height: 1;
-      transition: all 0.12s ease;
-    }
-
-    .gear-chip.active {
-      background: var(--accent);
-      color: var(--accent-inv);
-      border-color: var(--accent);
-    }
-
-    .del-set-btn {
-      border: none;
-      background: transparent;
-      color: var(--text-dim);
-      font-size: 16px;
-      line-height: 1;
-      padding: 5px;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-
-    .del-set-btn:hover {
-      color: var(--danger);
-      background: var(--danger-bg);
-    }
-
-    .manage-ex-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 12px;
-      margin-bottom: 10px;
-    }
-
-    .manage-ex-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    .manage-ex-title {
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .manage-ex-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .manage-ex-body {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 8px;
-      border-top: 1px solid var(--border-soft);
-    }
-
-    .manage-ex-body.open {
-      display: flex;
-    }
-
-    .ex-edit-row {
-      display: grid;
-      grid-template-columns: 1fr auto auto auto;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .order-btn {
-      background: var(--surface-3);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 8px 9px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .order-btn:hover:not(:disabled) {
-      border-color: #52525e;
-      background: #2b2b34;
-    }
-
-    .order-btn:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-
-    .add-ex-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .routine-crud-box {
-      background: var(--surface-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-md);
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .save-bar {
-      margin-top: 4px;
-    }
-
-    .primary-btn {
-      width: 100%;
-      background: var(--accent);
-      color: var(--accent-inv);
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.15s ease, transform 0.1s ease, background 0.15s ease;
-    }
-
-    .primary-btn:hover {
-      background: var(--accent-hover);
-    }
-
-    .primary-btn:active {
-      transform: scale(0.99);
-    }
-
-    .secondary-btn {
-      background: var(--surface-2);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 9px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .secondary-btn:hover {
-      background: var(--surface-3);
-    }
-
-    .danger-btn {
-      background: var(--danger-bg);
-      color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.28);
-      border-radius: var(--radius-sm);
-      padding: 9px 11px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .history-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .history-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .history-title {
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .history-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .history-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .history-ex-block {
-      background: var(--surface-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 9px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .history-ex-name {
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .history-set-line {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .empty-state {
+    input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: var(--radius-md) !important;
       text-align: center;
-      padding: 28px 18px;
-      color: var(--text-muted);
-      font-size: 13px;
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-lg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .chart-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .chart-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .chart-title {
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .chart-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .chart-stat-pill {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      background: var(--success-bg);
-      border: 1px solid rgba(34, 197, 94, 0.28);
-      padding: 4px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-
-    .chart-canvas-wrap {
-      width: 100%;
-      background: var(--surface-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-md);
-      padding: 10px;
-      overflow: hidden;
-    }
-
-    .chart-svg {
-      width: 100%;
-      height: 170px;
       display: block;
     }
 
-    .chart-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 11px;
-      color: var(--text-muted);
+    input:focus, select:focus {
+      border-color: var(--accent);
     }
 
-    .legend-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-
-    .point-readout {
-      background: var(--surface-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 8px 10px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .metric-switch-row {
+    .seg {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-
-    .metric-pill-btn {
       background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .seg button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
       padding: 9px 10px;
-      font-size: 12px;
+      border-radius: var(--radius-sm);
       font-weight: 600;
-      color: var(--text-muted);
+      font-size: 0.85rem;
       cursor: pointer;
     }
 
-    .metric-pill-btn.active {
+    .seg button.active {
+      background: var(--accent);
+      color: var(--accent-inv);
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      padding: 9px 13px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 38px;
+    }
+
+    .btn:hover {
+      background: var(--surface-3);
+    }
+
+    .btn-primary {
       background: var(--accent);
       border-color: var(--accent);
       color: var(--accent-inv);
-      font-weight: 700;
     }
 
-    .prog-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .btn-primary:hover {
+      background: var(--accent-hover);
     }
 
-    .prog-item {
-      background: var(--surface-2);
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 10px 11px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .prog-item-name {
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .prog-item-detail {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .prog-item-delta {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .delta-pos {
-      color: var(--accent);
-    }
-
-    .delta-neg {
+    .btn-danger {
+      background: var(--danger-bg);
+      border-color: rgba(239, 68, 68, 0.35);
       color: #fca5a5;
     }
 
-    .delta-neutral {
-      color: var(--text-muted);
+    .btn-sm {
+      padding: 6px 10px;
+      min-height: 32px;
+      font-size: 0.78rem;
+      border-radius: var(--radius-sm);
     }
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(14, 14, 18, 0.94);
-      backdrop-filter: blur(14px);
-      border-top: 1px solid var(--border);
-      padding: 8px 14px calc(8px + env(safe-area-inset-bottom));
-      z-index: 30;
-    }
-
-    .bottom-nav-inner {
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-
-    .nav-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: var(--radius-md);
-      padding: 11px 8px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .nav-btn.active {
-      background: var(--surface-2);
-      border-color: var(--border);
-      color: var(--accent);
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.72);
-      backdrop-filter: blur(5px);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 60;
-      padding: 12px;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    .modal-sheet {
-      width: 100%;
-      max-width: 560px;
-      max-height: 88dvh;
-      overflow-y: auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 16px;
+    .routine-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 8px;
     }
 
-    .modal-head {
+    .routine-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-    }
-
-    .modal-title {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .close-btn {
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
       background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 999px;
-      width: 34px;
-      height: 34px;
-      font-size: 16px;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
+      flex-wrap: wrap;
     }
 
-    .restructure-routine-box {
+    .routine-item.selected {
+      border-color: var(--accent);
+    }
+
+    .routine-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .routine-meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .ex-card {
       background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 11px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .checkbox-row {
-      display: flex;
-      align-items: center;
+    .set-line {
+      display: grid;
+      grid-template-columns: 36px 1fr 1fr auto;
       gap: 8px;
-      font-size: 13px;
-      color: var(--text-muted);
+      align-items: center;
+    }
+
+    .set-num {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .set-line input {
+      height: 38px;
+      font-size: 0.88rem;
+      padding: 0 8px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 18px 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(18, 18, 22, 0.94);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      z-index: 20;
+    }
+
+    .nav button {
+      flex: 1;
+      max-width: 220px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.84rem;
       cursor: pointer;
+    }
+
+    .nav button.active {
+      background: var(--surface-3);
+      color: var(--text);
     }
 
     .toast {
       position: fixed;
-      top: 16px;
+      top: 14px;
       left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: var(--accent);
-      color: var(--accent-inv);
-      font-size: 12px;
-      font-weight: 700;
+      transform: translateX(-50%) translateY(-80px);
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      color: var(--text);
       padding: 9px 14px;
       border-radius: 999px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 90;
-      white-space: nowrap;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+      z-index: 50;
     }
 
     .toast.show {
-      opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
-    @media (max-width: 420px) {
-      .meta-grid {
-        grid-template-columns: 1fr;
-      }
-      .sets-header,
-      .set-row {
-        grid-template-columns: 24px 1fr 1fr 54px auto;
-        gap: 4px;
-      }
-      .gear-chip {
-        padding: 6px 5px;
-        font-size: 10px;
-      }
+    .log-item {
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
     }
-    /* Ajuste para pantallas estrechas de iPhone */
-.row, .grid, .flex, [class*="grid"], [class*="flex"], .meta-grid > div {
-  min-width: 0;
-}
 
-input, select, textarea, button {
-  max-width: 100%;
-  min-width: 0;
-}
-
-@media (max-width: 480px) {
-  .meta-grid,
-  .fecha-peso,
-  .form-row,
-  .grid-2,
-  .cols-2 {
-    grid-template-columns: 1fr !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-}
-    @media (max-width: 480px) {
-  .meta-grid > div {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  input[type="date"],
-  input[type="number"],
-  input[type="text"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-}
-    input[type="date"] {
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  border-radius: var(--radius-md, 12px) !important;
-}
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
   <div id="toast" class="toast"></div>
 
-  <div class="app-shell">
-    <!-- 1. Cabecera con contador de sesión, estado y botón de meta/rutinas -->
-    <header class="top-header">
-      <div class="brand-block">
-        <div class="brand-title">
-          <span>Entreno Minimal</span>
-          <span id="sessionNumberBadge" class="session-pill">#1</span>
-        </div>
-        <div id="sessionSubInfo" class="brand-sub">Sin rutinas creadas · Local</div>
+  <div class="app">
+    <header class="header">
+      <div class="title-wrap">
+        <h1>Entreno Minimal <span class="badge">v2 · Local</span></h1>
+        <p id="statusText" class="sub">Listo para entrenar</p>
       </div>
-
       <div class="header-actions">
-        <button id="clearDraftBtn" class="ghost-btn" type="button" title="Limpiar series actuales">Limpiar</button>
-        <button id="goalButton" class="goal-btn" type="button" title="Meta de entrenos y gestionar rutinas">
-          <div class="goal-btn-top">
-            <span id="goalTargetLabel">Meta: 30 entrenos</span>
-          </div>
-          <div class="goal-btn-count" id="goalProgressText">0 / 30</div>
-          <div class="goal-bar-track">
-            <div id="goalProgressBar" class="goal-bar-fill"></div>
-          </div>
-        </button>
+        <button class="btn btn-sm" onclick="exportData()">Exportar</button>
+        <button class="btn btn-sm" onclick="document.getElementById('importFile').click()">Importar</button>
+        <input id="importFile" type="file" accept="application/json" class="hidden" onchange="importData(event)" />
       </div>
     </header>
 
-    <!-- Pestaña: Entrenar -->
-    <main id="workoutView">
-      <!-- 2. Tarjeta de fecha, peso en ayunas (kg) y estado nutricional -->
-      <section class="card" style="margin-bottom: 12px;">
-        <div class="meta-grid">
-          <div class="field-group">
-            <label class="field-label" for="dateInput">Fecha</label>
-            <input id="dateInput" class="input-box" type="date" />
+    <!-- VISTA ENTRENAR -->
+    <section id="view-train" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <p class="card-title">Registro diario</p>
+        <div class="grid-2">
+          <div class="field">
+            <label for="dateInput">Fecha</label>
+            <input id="dateInput" type="date" onchange="saveDraft()" />
           </div>
-
-          <div class="field-group">
-            <label class="field-label" for="weightInput">Peso en ayunas (kg)</label>
-            <input id="weightInput" class="input-box" type="number" step="0.1" inputmode="decimal" placeholder="Ej. 76.4" />
-          </div>
-
-          <div class="field-group full">
-            <span class="field-label">Estado nutricional</span>
-            <div class="segmented" role="group" aria-label="Estado nutricional">
-              <button id="fastedBtn" class="seg-btn active" type="button">En ayunas</button>
-              <button id="fedBtn" class="seg-btn" type="button">Después de comer</button>
-            </div>
+          <div class="field">
+            <label for="weightInput">Peso en ayunas (kg)</label>
+            <input id="weightInput" type="number" step="0.1" inputmode="decimal" placeholder="Ej. 76.4" oninput="saveDraft()" />
           </div>
         </div>
-      </section>
-
-      <!-- 3. Bloque rápido "Subir peso" -->
-      <section class="quick-weight-card" id="quickWeightSection">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-          <span class="field-label" style="margin:0;">Día de descanso o pesaje rápido</span>
-          <span class="autofill-tag" style="margin:0;">Sin crear sesión</span>
-        </div>
-        <div class="quick-weight-row">
-          <input id="quickWeightInput" class="input-box" type="number" step="0.1" inputmode="decimal" placeholder="Peso hoy en ayunas (kg)..." />
-          <button id="saveOnlyWeightBtn" class="quick-weight-btn" type="button">Subir peso</button>
-        </div>
-      </section>
-
-      <!-- 4. Selector de rutinas del día -->
-      <section class="card" style="margin-bottom: 12px;">
-        <div class="routine-header-row">
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span class="field-label" style="margin:0;">Rutina del día</span>
-            <span id="routineModeBadge" class="mode-badge">Automático</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <button id="resetAutoRoutineBtn" class="auto-btn" type="button" style="display:none;">Volver a Auto</button>
-            <button id="openNewRoutineQuickBtn" class="auto-btn" type="button">+ Nueva rutina</button>
+        <div class="field">
+          <label>Estado nutricional</label>
+          <div class="seg">
+            <button id="state-fasted" type="button" class="active" onclick="setNutriState('En ayunas')">En ayunas</button>
+            <button id="state-fed" type="button" onclick="setNutriState('Después de comer')">Después de comer</button>
           </div>
         </div>
-
-        <div id="routineTabs" class="routine-tabs-scroll"></div>
-      </section>
-
-      <!-- 5. Tarjetas de ejercicios con series -->
-      <section id="exercisesContainer" class="exercises-list"></section>
-
-      <!-- 6. Panel desplegable "Construir y editar rutina" -->
-      <section class="manage-ex-card" id="manageExercisesSection">
-        <div class="manage-ex-head" id="toggleManageExercisesBtn" role="button" tabindex="0">
-          <div>
-            <div class="manage-ex-title">Construir y editar rutina</div>
-            <div class="manage-ex-sub" id="manageExercisesSummary">Añade, renombra, reordena o elimina ejercicios</div>
-          </div>
-          <span class="ghost-btn" id="manageExercisesChevron" style="padding:6px 10px; font-size:11px;">Abrir</span>
-        </div>
-
-        <div class="manage-ex-body" id="manageExercisesBody">
-          <div id="routineExercisesEditorList" style="display:flex; flex-direction:column; gap:7px;"></div>
-          <div class="add-ex-row">
-            <input id="newExerciseNameInput" class="input-box" type="text" placeholder="Nombre del ejercicio o máquina..." />
-            <button id="addCustomExerciseBtn" class="secondary-btn" type="button" style="padding:10px 12px;">+ Añadir</button>
-          </div>
-
-          <div class="routine-crud-box" id="activeRoutineCrudBox">
-            <span class="field-label">Renombrar o eliminar rutina actual</span>
-            <div class="add-ex-row">
-              <input id="renameActiveRoutineInput" class="input-box" type="text" placeholder="Nombre de la rutina..." />
-              <button id="renameActiveRoutineBtn" class="secondary-btn" type="button" style="padding:10px 12px;">Renombrar</button>
-            </div>
-            <button id="deleteActiveRoutineBtn" class="danger-btn" type="button">Eliminar esta rutina</button>
-          </div>
-        </div>
-      </section>
-
-      <div class="save-bar">
-        <button id="saveWorkoutBtn" class="primary-btn" type="button">Guardar entrenamiento</button>
       </div>
-    </main>
 
-    <!-- Pestaña: Historial -->
-    <main id="historyView" style="display:none;">
-      <div id="historyContainer" class="history-list"></div>
-    </main>
-
-    <!-- Pestaña: Gráficos -->
-    <main id="chartsView" style="display:none;">
-      <section class="chart-card">
-        <div class="chart-header">
-          <div>
-            <div class="chart-title">Peso corporal (kg)</div>
-            <div class="chart-sub" id="bodyWeightChartSub">Pesajes rápidos y entrenos guardados</div>
-          </div>
-          <span class="chart-stat-pill" id="bodyWeightDeltaBadge">—</span>
-        </div>
-        <div class="chart-canvas-wrap">
-          <svg id="bodyWeightChartSvg" class="chart-svg" viewBox="0 0 500 170" preserveAspectRatio="none"></svg>
-        </div>
-        <div id="bodyWeightPointReadout" class="point-readout">
-          <span>Toca un punto para ver el detalle</span>
-          <span>—</span>
-        </div>
-        <div class="chart-legend">
-          <span><i class="legend-dot" style="background:#22c55e;"></i>Evolución peso corporal</span>
-          <span><i class="legend-dot" style="background:#f4f4f6;"></i>Registro individual</span>
-        </div>
-      </section>
-
-      <section class="chart-card">
-        <div class="chart-header">
-          <div>
-            <div class="chart-title">Progresión en máquinas y ejercicios</div>
-            <div class="chart-sub" id="exerciseChartSub">Selecciona un ejercicio con marcas registradas</div>
-          </div>
-          <span class="chart-stat-pill" id="exerciseDeltaBadge">—</span>
-        </div>
-
-        <div class="field-group">
-          <label class="field-label" for="exerciseProgressSelect">Ejercicio o máquina</label>
-          <select id="exerciseProgressSelect" class="input-box"></select>
-        </div>
-
-        <div class="metric-switch-row">
-          <button id="metricTopKgBtn" class="metric-pill-btn active" type="button">Peso top (kg)</button>
-          <button id="metricVolumeBtn" class="metric-pill-btn" type="button">Volumen (kg × reps)</button>
-        </div>
-
-        <div class="chart-canvas-wrap">
-          <svg id="exerciseChartSvg" class="chart-svg" viewBox="0 0 500 170" preserveAspectRatio="none"></svg>
-        </div>
-        <div id="exercisePointReadout" class="point-readout">
-          <span>Última marca y récord del ejercicio</span>
-          <span>—</span>
-        </div>
-      </section>
-
-      <section class="chart-card">
-        <div class="chart-header">
-          <div>
-            <div class="chart-title">Resumen de progresiones</div>
-            <div class="chart-sub">Comparativa entre tu primer registro y el último</div>
+      <div class="card">
+        <div class="row-between">
+          <p class="card-title">Mis rutinas</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-sm" onclick="addStarterRoutines()">+ Plantilla base</button>
+            <button class="btn btn-sm btn-primary" onclick="createRoutinePrompt()">+ Nueva rutina</button>
           </div>
         </div>
-        <div id="progressSummaryList" class="prog-list"></div>
-      </section>
-    </main>
+        <div id="routinesContainer" class="routine-list"></div>
+      </div>
+
+      <div id="activeRoutineCard" class="card hidden">
+        <div class="row-between">
+          <div>
+            <p class="card-title">Rutina activa</p>
+            <h2 id="activeRoutineTitle" style="margin:2px 0 0;font-size:1.05rem;"></h2>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn btn-sm" onclick="renameActiveRoutinePrompt()">Renombrar rutina</button>
+            <button class="btn btn-sm" onclick="addExercisePrompt()">+ Ejercicio</button>
+          </div>
+        </div>
+        <div id="exercisesContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <button class="btn btn-primary" onclick="saveWorkoutSession()">Guardar sesión de hoy</button>
+      </div>
+    </section>
+
+    <!-- VISTA HISTORIAL -->
+    <section id="view-history" class="hidden" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="row-between">
+          <p class="card-title">Historial guardado</p>
+          <button class="btn btn-sm btn-danger" onclick="clearHistory()">Borrar historial</button>
+        </div>
+        <div id="historyContainer" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+    </section>
   </div>
 
-  <!-- 7. Barra inferior con 3 pestañas -->
-  <nav class="bottom-nav">
-    <div class="bottom-nav-inner">
-      <button id="navWorkoutBtn" class="nav-btn active" type="button">Entrenar</button>
-      <button id="navHistoryBtn" class="nav-btn" type="button">Historial</button>
-      <button id="navChartsBtn" class="nav-btn" type="button">Gráficos</button>
-    </div>
+  <nav class="nav">
+    <button id="nav-train" class="active" onclick="switchTab('train')">Entrenar</button>
+    <button id="nav-history" onclick="switchTab('history')">Historial</button>
   </nav>
 
-  <!-- 8. Modal Meta, Crear/Editar Rutinas y Reiniciar Bloque -->
-  <div id="goalModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal-sheet">
-      <div class="modal-head">
-        <div class="modal-title">Meta y rutinas a medida</div>
-        <button id="closeGoalModalBtn" class="close-btn" type="button">&times;</button>
-      </div>
-
-      <div class="field-group">
-        <label class="field-label" for="goalInput">Meta de entrenos del bloque</label>
-        <input id="goalInput" class="input-box" type="number" min="1" max="500" step="1" />
-      </div>
-
-      <div class="field-group">
-        <label class="field-label" for="createRoutineModalInput">Crear rutina nueva</label>
-        <div class="add-ex-row">
-          <input id="createRoutineModalInput" class="input-box" type="text" placeholder="Ej. Empuje, Tirón, Fullbody..." />
-          <button id="createRoutineModalBtn" class="secondary-btn" type="button" style="padding:10px 12px;">+ Crear</button>
-        </div>
-      </div>
-
-      <div class="field-group">
-        <span class="field-label">Tus rutinas creadas</span>
-        <div id="restructureExercisesEditor" style="display:flex; flex-direction:column; gap:10px;"></div>
-      </div>
-
-      <label class="checkbox-row">
-        <input id="archiveBlockCheckbox" type="checkbox" checked />
-        <span>Archivar historial actual al iniciar nuevo bloque desde el Entreno #1</span>
-      </label>
-
-      <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:8px;">
-        <button id="saveGoalOnlyBtn" class="secondary-btn" type="button">Guardar cambios</button>
-        <button id="restructureBlockBtn" class="primary-btn" type="button" style="padding:10px 12px; font-size:13px;">Reiniciar bloque (#1)</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Editar Entrenamiento del Historial -->
-  <div id="editHistoryModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal-sheet">
-      <div class="modal-head">
-        <div id="editHistoryTitle" class="modal-title">Editar entrenamiento</div>
-        <button id="closeEditHistoryBtn" class="close-btn" type="button">&times;</button>
-      </div>
-
-      <div class="meta-grid">
-        <div class="field-group">
-          <label class="field-label" for="editDateInput">Fecha</label>
-          <input id="editDateInput" class="input-box" type="date" />
-        </div>
-        <div class="field-group">
-          <label class="field-label" for="editWeightInput">Peso en ayunas (kg)</label>
-          <input id="editWeightInput" class="input-box" type="number" step="0.1" inputmode="decimal" />
-        </div>
-        <div class="field-group full">
-          <span class="field-label">Estado nutricional</span>
-          <div class="segmented">
-            <button id="editFastedBtn" class="seg-btn" type="button">En ayunas</button>
-            <button id="editFedBtn" class="seg-btn" type="button">Después de comer</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="editExercisesContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
-
-      <div style="display:grid; grid-template-columns: 1fr 1.4fr; gap:8px;">
-        <button id="cancelEditHistoryBtn" class="secondary-btn" type="button">Cancelar</button>
-        <button id="saveEditHistoryBtn" class="primary-btn" type="button" style="padding:10px 12px; font-size:13px;">Guardar cambios</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Crear Rutina Rápida (sin usar alert/confirm) -->
-  <div id="quickRoutineModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal-sheet" style="max-height: 45dvh;">
-      <div class="modal-head">
-        <div class="modal-title">Nueva rutina</div>
-        <button id="closeQuickRoutineModalBtn" class="close-btn" type="button">&times;</button>
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="quickRoutineNameInput">Nombre de la rutina</label>
-        <input id="quickRoutineNameInput" class="input-box" type="text" placeholder="Ej. Torso, Pierna, Empuje..." />
-      </div>
-      <button id="confirmQuickRoutineBtn" class="primary-btn" type="button">Crear rutina</button>
-    </div>
-  </div>
-
   <script>
-    const STORAGE_KEY = "entreno_minimal_v2_custom";
+    const STORAGE_KEY = 'entreno_minimal_v2';
 
-    function makeDefaultSets() {
-      return [
-        { weight: "", reps: "", rir: "", straps: false, wristWraps: false },
-        { weight: "", reps: "", rir: "", straps: false, wristWraps: false }
-      ];
-    }
+    const defaultState = {
+      date: new Date().toISOString().slice(0, 10),
+      weight: '',
+      nutriState: 'En ayunas',
+      routines: [],
+      selectedRoutineId: null,
+      history: []
+    };
 
-    function cloneSets(sets) {
-      if (!Array.isArray(sets) || sets.length === 0) return makeDefaultSets();
-      return sets.map((s) => ({
-        weight: s.weight ?? "",
-        reps: s.reps ?? "",
-        rir: s.rir ?? "",
-        straps: Boolean(s.straps),
-        wristWraps: Boolean(s.wristWraps)
-      }));
-    }
-
-    function getTodayISO() {
-      const now = new Date();
-      const offset = now.getTimezoneOffset();
-      const local = new Date(now.getTime() - offset * 60000);
-      return local.toISOString().slice(0, 10);
-    }
-
-    function slugifyRoutineId(name, existingIds = []) {
-      const base =
-        (name || "rutina")
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^a-z0-9]+/g, "_")
-          .replace(/^_+|_+$/g, "") || "rutina";
-      let candidate = base;
-      let counter = 2;
-      while (existingIds.includes(candidate)) {
-        candidate = `${base}_${counter}`;
-        counter += 1;
-      }
-      return candidate;
-    }
-
-    // Initial state starts clean with no predefined routines or exercises
-    function createInitialState() {
-      return {
-        sessionCounter: 1,
-        blockSessionsCount: 0,
-        goalTarget: 30,
-        routines: [],
-        activeRoutineId: null,
-        manualRoutineOverride: false,
-        date: getTodayISO(),
-        weight: "",
-        nutrition: "fasted",
-        draftExercisesByRoutine: {},
-        lastByRoutine: {},
-        history: [],
-        weightLogs: [],
-        archivedBlocks: []
-      };
-    }
-
-    function getRoutineById(routineId) {
-      return (state.routines || []).find((r) => r.id === routineId) || null;
-    }
-
-    function getCycleRoutineForSession(sessionNumber) {
-      const list = state.routines || [];
-      if (!list.length) return null;
-      const idx = ((Math.max(1, Number(sessionNumber) || 1) - 1) % list.length + list.length) % list.length;
-      return list[idx].id;
-    }
-
-    function buildRoutineDraftFromReference(routineObj, lastSessionEntry) {
-      const exerciseNames = Array.isArray(routineObj?.exercises) ? routineObj.exercises : [];
-      const refExercises = lastSessionEntry?.exercises || [];
-
-      return exerciseNames.map((name, idx) => {
-        const matched =
-          refExercises.find((e) => e.name.trim().toLowerCase() === name.trim().toLowerCase()) ||
-          refExercises[idx] ||
-          null;
-
-        if (matched && Array.isArray(matched.sets) && matched.sets.length > 0) {
-          return {
-            name,
-            sets: cloneSets(matched.sets),
-            autofilled: true
-          };
-        }
-
-        return {
-          name,
-          sets: makeDefaultSets(),
-          autofilled: false
-        };
-      });
-    }
+    let state = loadState();
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return createInitialState();
-        const parsed = JSON.parse(raw);
-        const base = createInitialState();
-
-        const routines = Array.isArray(parsed.routines)
-          ? parsed.routines
-              .filter((r) => r && r.id)
-              .map((r) => ({
-                id: String(r.id),
-                name: String(r.name || "Rutina").trim() || "Rutina",
-                exercises: Array.isArray(r.exercises) ? r.exercises.map((x) => String(x)) : []
-              }))
-          : [];
-
-        const validIds = routines.map((r) => r.id);
-        const activeRoutineId = validIds.includes(parsed.activeRoutineId)
-          ? parsed.activeRoutineId
-          : validIds[0] || null;
-
-        const draftExercisesByRoutine = {};
-        const lastByRoutine = {};
-
-        routines.forEach((r) => {
-          lastByRoutine[r.id] = parsed.lastByRoutine?.[r.id] || null;
-          const existingDraft = parsed.draftExercisesByRoutine?.[r.id];
-          if (Array.isArray(existingDraft)) {
-            draftExercisesByRoutine[r.id] = existingDraft.map((ex) => ({
-              name: String(ex.name || "Ejercicio"),
-              sets: cloneSets(ex.sets),
-              autofilled: Boolean(ex.autofilled)
-            }));
-          } else {
-            draftExercisesByRoutine[r.id] = buildRoutineDraftFromReference(r, lastByRoutine[r.id]);
-          }
-        });
-
-        return {
-          ...base,
-          sessionCounter: Math.max(1, Number(parsed.sessionCounter) || 1),
-          blockSessionsCount: Math.max(0, Number(parsed.blockSessionsCount) || 0),
-          goalTarget: Math.max(1, Number(parsed.goalTarget) || 30),
-          routines,
-          activeRoutineId,
-          manualRoutineOverride: Boolean(parsed.manualRoutineOverride),
-          date: parsed.date || getTodayISO(),
-          weight: parsed.weight ?? "",
-          nutrition: parsed.nutrition === "fed" ? "fed" : "fasted",
-          draftExercisesByRoutine,
-          lastByRoutine,
-          history: Array.isArray(parsed.history) ? parsed.history : [],
-          weightLogs: Array.isArray(parsed.weightLogs) ? parsed.weightLogs : [],
-          archivedBlocks: Array.isArray(parsed.archivedBlocks) ? parsed.archivedBlocks : []
-        };
-      } catch (e) {
-        return createInitialState();
+        if (!raw) return structuredClone(defaultState);
+        return { ...structuredClone(defaultState), ...JSON.parse(raw) };
+      } catch {
+        return structuredClone(defaultState);
       }
     }
-
-    let state = loadState();
-    let currentView = "workout";
-    let editingHistoryId = null;
-    let editingDraftData = null;
-    let manageExercisesOpen = false;
-    let selectedProgressExercise = "";
-    let progressMetricMode = "topKg";
-    let selectedBodyWeightIndex = null;
-    let selectedExercisePointIndex = null;
 
     function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {
-        showToast("Error al guardar en localStorage");
-      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      render();
     }
 
-    function showToast(message) {
-      const el = document.getElementById("toast");
-      el.textContent = message;
-      el.classList.add("show");
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => {
-        el.classList.remove("show");
-      }, 2100);
+    function saveDraft() {
+      state.date = document.getElementById('dateInput').value || state.date;
+      state.weight = document.getElementById('weightInput').value;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updateStatus();
     }
 
-    function formatNutrition(nutrition) {
-      return nutrition === "fed" ? "Después de comer" : "En ayunas";
-    }
-
-    function createRoutine(name) {
-      const cleanName = (name || "").trim();
-      if (!cleanName) {
-        showToast("Escribe un nombre para la rutina");
-        return null;
-      }
-      const existingIds = state.routines.map((r) => r.id);
-      const id = slugifyRoutineId(cleanName, existingIds);
-      const newRoutine = { id, name: cleanName, exercises: [] };
-      state.routines.push(newRoutine);
-      state.draftExercisesByRoutine[id] = [];
-      state.lastByRoutine[id] = null;
-      state.activeRoutineId = id;
+    function setNutriState(val) {
+      state.nutriState = val;
       saveState();
-      renderAll();
-      showToast(`Rutina creada: ${cleanName}`);
-      return newRoutine;
     }
 
-    function renderHeader() {
-      document.getElementById("sessionNumberBadge").textContent = `#${state.sessionCounter}`;
-      const hasRoutines = state.routines.length > 0;
-      const modeText = !hasRoutines
-        ? "Sin rutinas creadas"
-        : state.manualRoutineOverride
-        ? "Selección manual"
-        : "Ciclo automático";
-      document.getElementById("sessionSubInfo").textContent = `${modeText} · Local`;
-
-      const target = Math.max(1, Number(state.goalTarget) || 30);
-      const current = Math.max(0, Number(state.blockSessionsCount) || 0);
-      const pct = Math.min(100, Math.round((current / target) * 100));
-
-      document.getElementById("goalTargetLabel").textContent = `Meta: ${target} entrenos`;
-      document.getElementById("goalProgressText").textContent = `${current} / ${target}`;
-
-      const bar = document.getElementById("goalProgressBar");
-      bar.style.width = `${pct}%`;
-      bar.classList.toggle("complete", current >= target);
-    }
-
-    function renderMetaAndRoutineSelector() {
-      document.getElementById("dateInput").value = state.date || getTodayISO();
-      document.getElementById("weightInput").value = state.weight ?? "";
-
-      document.getElementById("fastedBtn").classList.toggle("active", state.nutrition !== "fed");
-      document.getElementById("fedBtn").classList.toggle("active", state.nutrition === "fed");
-
-      const badge = document.getElementById("routineModeBadge");
-      const resetAutoBtn = document.getElementById("resetAutoRoutineBtn");
-      const tabsWrap = document.getElementById("routineTabs");
-      tabsWrap.innerHTML = "";
-
-      if (!state.routines.length) {
-        badge.textContent = "Vacío";
-        badge.classList.remove("manual");
-        resetAutoBtn.style.display = "none";
-        tabsWrap.innerHTML = `<span class="autofill-tag" style="margin:0;">Aún no has creado rutinas. Pulsa "+ Nueva rutina" para empezar.</span>`;
-        return;
-      }
-
-      if (state.manualRoutineOverride) {
-        badge.textContent = "Manual";
-        badge.classList.add("manual");
-        resetAutoBtn.style.display = "inline-block";
-      } else {
-        badge.textContent = "Automático";
-        badge.classList.remove("manual");
-        resetAutoBtn.style.display = "none";
-      }
-
-      state.routines.forEach((routine, idx) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = `routine-tab ${routine.id === state.activeRoutineId ? "active" : ""}`;
-        btn.innerHTML = `
-          <span class="rt-name">${routine.name}</span>
-          <span class="rt-sub">${routine.exercises.length} ej. · Ciclo ${idx + 1}</span>
-        `;
-        btn.addEventListener("click", () => {
-          state.activeRoutineId = routine.id;
-          state.manualRoutineOverride = true;
-          saveState();
-          renderAll();
-          showToast(`Modo manual: ${routine.name}`);
-        });
-        tabsWrap.appendChild(btn);
-      });
-    }
-
-    function openQuickRoutineModal() {
-      const inp = document.getElementById("quickRoutineNameInput");
-      inp.value = "";
-      document.getElementById("quickRoutineModal").classList.add("open");
-      setTimeout(() => inp.focus(), 50);
-    }
-
-    function closeQuickRoutineModal() {
-      document.getElementById("quickRoutineModal").classList.remove("open");
-    }
-
-    function renderExercises() {
-      const container = document.getElementById("exercisesContainer");
-      container.innerHTML = "";
-
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div>No hay ninguna rutina creada todavía. Crea la tuya desde cero y añade los ejercicios que quieras.</div>
-            <button type="button" class="primary-btn" id="emptyCreateFirstRoutineBtn" style="max-width:240px; padding:11px 14px;">+ Crear primera rutina</button>
-          </div>
-        `;
-        document.getElementById("emptyCreateFirstRoutineBtn")?.addEventListener("click", openQuickRoutineModal);
-        document.getElementById("saveWorkoutBtn").textContent = "Crea una rutina para guardar";
-        renderRoutineExerciseManager();
-        return;
-      }
-
-      const exercises = state.draftExercisesByRoutine[activeRoutine.id] || [];
-
-      if (!exercises.length) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div>La rutina <strong>${activeRoutine.name}</strong> aún no tiene ejercicios.</div>
-            <button type="button" class="secondary-btn" id="emptyAddExerciseFocusBtn">+ Añadir primer ejercicio</button>
-          </div>
-        `;
-        const focusBtn = document.getElementById("emptyAddExerciseFocusBtn");
-        if (focusBtn) {
-          focusBtn.addEventListener("click", () => {
-            manageExercisesOpen = true;
-            renderRoutineExerciseManager();
-            document.getElementById("newExerciseNameInput")?.focus();
-          });
-        }
-      } else {
-        exercises.forEach((ex) => {
-          const card = document.createElement("article");
-          card.className = "exercise-card";
-
-          const top = document.createElement("div");
-          top.className = "exercise-top";
-
-          const titleWrap = document.createElement("div");
-          const h3 = document.createElement("div");
-          h3.className = "exercise-title";
-          h3.textContent = ex.name;
-          titleWrap.appendChild(h3);
-
-          if (ex.autofilled) {
-            const hint = document.createElement("div");
-            hint.className = "autofill-tag";
-            hint.textContent = "Autorrellenado del último entreno · Puedes modificarlo";
-            titleWrap.appendChild(hint);
-          }
-
-          const addSetBtn = document.createElement("button");
-          addSetBtn.className = "add-set-btn";
-          addSetBtn.type = "button";
-          addSetBtn.textContent = "+ Serie";
-          addSetBtn.addEventListener("click", () => {
-            ex.sets.push({ weight: "", reps: "", rir: "", straps: false, wristWraps: false });
-            ex.autofilled = false;
-            saveState();
-            renderExercises();
-          });
-
-          top.appendChild(titleWrap);
-          top.appendChild(addSetBtn);
-          card.appendChild(top);
-
-          const header = document.createElement("div");
-          header.className = "sets-header";
-          header.innerHTML = `
-            <span>#</span>
-            <span>Kg</span>
-            <span>Reps</span>
-            <span>RIR</span>
-            <span>Equipo</span>
-          `;
-          card.appendChild(header);
-
-          ex.sets.forEach((setItem, sIdx) => {
-            const row = document.createElement("div");
-            row.className = "set-row";
-
-            const numEl = document.createElement("span");
-            numEl.className = "set-num";
-            numEl.textContent = `${sIdx + 1}`;
-
-            const kgInput = document.createElement("input");
-            kgInput.className = "set-input";
-            kgInput.type = "number";
-            kgInput.step = "0.5";
-            kgInput.inputmode = "decimal";
-            kgInput.placeholder = "kg";
-            kgInput.value = setItem.weight ?? "";
-            kgInput.addEventListener("input", (e) => {
-              setItem.weight = e.target.value;
-              ex.autofilled = false;
-              saveState();
-            });
-
-            const repsInput = document.createElement("input");
-            repsInput.className = "set-input";
-            repsInput.type = "number";
-            repsInput.step = "1";
-            repsInput.inputmode = "numeric";
-            repsInput.placeholder = "reps";
-            repsInput.value = setItem.reps ?? "";
-            repsInput.addEventListener("input", (e) => {
-              setItem.reps = e.target.value;
-              ex.autofilled = false;
-              saveState();
-            });
-
-            const rirInput = document.createElement("input");
-            rirInput.className = "set-input";
-            rirInput.type = "number";
-            rirInput.step = "0.5";
-            rirInput.inputmode = "decimal";
-            rirInput.placeholder = "RIR";
-            rirInput.value = setItem.rir ?? "";
-            rirInput.addEventListener("input", (e) => {
-              setItem.rir = e.target.value;
-              ex.autofilled = false;
-              saveState();
-            });
-
-            const gearGroup = document.createElement("div");
-            gearGroup.className = "gear-group";
-
-            const strapsBtn = document.createElement("button");
-            strapsBtn.type = "button";
-            strapsBtn.className = `gear-chip ${setItem.straps ? "active" : ""}`;
-            strapsBtn.title = "Straps";
-            strapsBtn.textContent = "S";
-            strapsBtn.addEventListener("click", () => {
-              setItem.straps = !setItem.straps;
-              ex.autofilled = false;
-              saveState();
-              renderExercises();
-            });
-
-            const wrapsBtn = document.createElement("button");
-            wrapsBtn.type = "button";
-            wrapsBtn.className = `gear-chip ${setItem.wristWraps ? "active" : ""}`;
-            wrapsBtn.title = "Muñequeras";
-            wrapsBtn.textContent = "M";
-            wrapsBtn.addEventListener("click", () => {
-              setItem.wristWraps = !setItem.wristWraps;
-              ex.autofilled = false;
-              saveState();
-              renderExercises();
-            });
-
-            const delBtn = document.createElement("button");
-            delBtn.type = "button";
-            delBtn.className = "del-set-btn";
-            delBtn.title = "Eliminar serie";
-            delBtn.textContent = "×";
-            delBtn.addEventListener("click", () => {
-              if (ex.sets.length <= 1) {
-                ex.sets = [{ weight: "", reps: "", rir: "", straps: false, wristWraps: false }];
-              } else {
-                ex.sets.splice(sIdx, 1);
-              }
-              ex.autofilled = false;
-              saveState();
-              renderExercises();
-            });
-
-            gearGroup.appendChild(strapsBtn);
-            gearGroup.appendChild(wrapsBtn);
-            gearGroup.appendChild(delBtn);
-
-            row.appendChild(numEl);
-            row.appendChild(kgInput);
-            row.appendChild(repsInput);
-            row.appendChild(rirInput);
-            row.appendChild(gearGroup);
-
-            card.appendChild(row);
-          });
-
-          container.appendChild(card);
-        });
-      }
-
-      document.getElementById("saveWorkoutBtn").textContent = `Guardar #${state.sessionCounter} · ${activeRoutine.name}`;
-      renderRoutineExerciseManager();
-    }
-
-    function syncRoutineDraftWithNames(routineObj, newNames) {
-      const rk = routineObj.id;
-      const prevDrafts = state.draftExercisesByRoutine[rk] || [];
-      const refExercises = state.lastByRoutine[rk]?.exercises || [];
-
-      state.draftExercisesByRoutine[rk] = newNames.map((name, idx) => {
-        const existing = prevDrafts[idx];
-        const hasAnyInput =
-          existing &&
-          Array.isArray(existing.sets) &&
-          existing.sets.some((s) => s.weight !== "" || s.reps !== "" || s.rir !== "" || s.straps || s.wristWraps);
-
-        if (hasAnyInput) {
-          return {
-            name,
-            sets: cloneSets(existing.sets),
-            autofilled: Boolean(existing.autofilled)
-          };
-        }
-
-        const matchedRef =
-          refExercises.find((e) => e.name.trim().toLowerCase() === name.trim().toLowerCase()) || null;
-
-        if (matchedRef && Array.isArray(matchedRef.sets) && matchedRef.sets.length > 0) {
-          return {
-            name,
-            sets: cloneSets(matchedRef.sets),
-            autofilled: true
-          };
-        }
-
-        return {
-          name,
-          sets: existing && Array.isArray(existing.sets) ? cloneSets(existing.sets) : makeDefaultSets(),
-          autofilled: false
-        };
-      });
-    }
-
-    function renderRoutineExerciseManager() {
-      const listEl = document.getElementById("routineExercisesEditorList");
-      const summaryEl = document.getElementById("manageExercisesSummary");
-      const bodyEl = document.getElementById("manageExercisesBody");
-      const chevronEl = document.getElementById("manageExercisesChevron");
-      const crudBox = document.getElementById("activeRoutineCrudBox");
-      const addRow = document.querySelector("#manageExercisesBody .add-ex-row");
-
-      bodyEl.classList.toggle("open", manageExercisesOpen);
-      chevronEl.textContent = manageExercisesOpen ? "Cerrar" : "Abrir";
-
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) {
-        summaryEl.textContent = "Crea primero una rutina para añadir ejercicios";
-        listEl.innerHTML = "";
-        if (addRow) addRow.style.display = "none";
-        if (crudBox) crudBox.style.display = "none";
-        return;
-      }
-
-      if (addRow) addRow.style.display = "grid";
-      if (crudBox) crudBox.style.display = "flex";
-
-      const names = activeRoutine.exercises || [];
-      summaryEl.textContent = `${names.length} ejercicios en "${activeRoutine.name}" · Toca para editar u ordenar`;
-      document.getElementById("renameActiveRoutineInput").value = activeRoutine.name;
-
-      listEl.innerHTML = "";
-      names.forEach((exName, idx) => {
-        const row = document.createElement("div");
-        row.className = "ex-edit-row";
-
-        const nameInput = document.createElement("input");
-        nameInput.className = "input-box";
-        nameInput.type = "text";
-        nameInput.value = exName;
-        nameInput.placeholder = `Ejercicio ${idx + 1}`;
-        nameInput.addEventListener("input", (e) => {
-          const updatedVal = e.target.value;
-          activeRoutine.exercises[idx] = updatedVal;
-          if (state.draftExercisesByRoutine[activeRoutine.id]?.[idx]) {
-            state.draftExercisesByRoutine[activeRoutine.id][idx].name = updatedVal || `Ejercicio ${idx + 1}`;
-          }
-          saveState();
-          renderExercisesOnlyCards();
-        });
-
-        const upBtn = document.createElement("button");
-        upBtn.type = "button";
-        upBtn.className = "order-btn";
-        upBtn.title = "Subir";
-        upBtn.textContent = "↑";
-        upBtn.disabled = idx === 0;
-        upBtn.addEventListener("click", () => {
-          if (idx === 0) return;
-          const prevDrafts = [...(state.draftExercisesByRoutine[activeRoutine.id] || [])];
-          [activeRoutine.exercises[idx - 1], activeRoutine.exercises[idx]] = [
-            activeRoutine.exercises[idx],
-            activeRoutine.exercises[idx - 1]
-          ];
-          if (prevDrafts[idx - 1] && prevDrafts[idx]) {
-            [prevDrafts[idx - 1], prevDrafts[idx]] = [prevDrafts[idx], prevDrafts[idx - 1]];
-            state.draftExercisesByRoutine[activeRoutine.id] = prevDrafts;
-          }
-          saveState();
-          renderExercises();
-        });
-
-        const downBtn = document.createElement("button");
-        downBtn.type = "button";
-        downBtn.className = "order-btn";
-        downBtn.title = "Bajar";
-        downBtn.textContent = "↓";
-        downBtn.disabled = idx === names.length - 1;
-        downBtn.addEventListener("click", () => {
-          if (idx >= names.length - 1) return;
-          const prevDrafts = [...(state.draftExercisesByRoutine[activeRoutine.id] || [])];
-          [activeRoutine.exercises[idx + 1], activeRoutine.exercises[idx]] = [
-            activeRoutine.exercises[idx],
-            activeRoutine.exercises[idx + 1]
-          ];
-          if (prevDrafts[idx + 1] && prevDrafts[idx]) {
-            [prevDrafts[idx + 1], prevDrafts[idx]] = [prevDrafts[idx], prevDrafts[idx + 1]];
-            state.draftExercisesByRoutine[activeRoutine.id] = prevDrafts;
-          }
-          saveState();
-          renderExercises();
-        });
-
-        const delBtn = document.createElement("button");
-        delBtn.type = "button";
-        delBtn.className = "danger-btn";
-        delBtn.textContent = "Quitar";
-        delBtn.addEventListener("click", () => {
-          activeRoutine.exercises.splice(idx, 1);
-          syncRoutineDraftWithNames(activeRoutine, activeRoutine.exercises);
-          saveState();
-          renderExercises();
-          renderMetaAndRoutineSelector();
-          showToast("Ejercicio eliminado");
-        });
-
-        row.appendChild(nameInput);
-        row.appendChild(upBtn);
-        row.appendChild(downBtn);
-        row.appendChild(delBtn);
-        listEl.appendChild(row);
-      });
-    }
-
-    function renderExercisesOnlyCards() {
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) return;
-      const container = document.getElementById("exercisesContainer");
-      const exercises = state.draftExercisesByRoutine[activeRoutine.id] || [];
-      const titles = container.querySelectorAll(".exercise-title");
-      exercises.forEach((ex, idx) => {
-        if (titles[idx]) {
-          titles[idx].textContent = ex.name || `Ejercicio ${idx + 1}`;
-        }
-      });
-    }
-
-    function addCustomExerciseToActiveRoutine() {
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) {
-        showToast("Crea primero una rutina");
-        return;
-      }
-      const input = document.getElementById("newExerciseNameInput");
-      const rawName = (input?.value || "").trim();
-      if (!rawName) {
-        showToast("Escribe el nombre del ejercicio");
-        input?.focus();
-        return;
-      }
-      activeRoutine.exercises.push(rawName);
-      if (!Array.isArray(state.draftExercisesByRoutine[activeRoutine.id])) {
-        state.draftExercisesByRoutine[activeRoutine.id] = [];
-      }
-      state.draftExercisesByRoutine[activeRoutine.id].push({
-        name: rawName,
-        sets: makeDefaultSets(),
-        autofilled: false
-      });
-      input.value = "";
+    function createRoutinePrompt() {
+      const name = prompt('Nombre de la nueva rutina (ej. Torso A, Pierna, Empuje):');
+      if (!name || !name.trim()) return;
+      const id = 'r_' + Date.now();
+      state.routines.push({ id, name: name.trim(), exercises: [] });
+      state.selectedRoutineId = id;
       saveState();
-      renderExercises();
-      renderMetaAndRoutineSelector();
-      showToast(`Añadido: ${rawName}`);
+      showToast('Rutina creada');
     }
 
-    function renameActiveRoutine() {
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) return;
-      const input = document.getElementById("renameActiveRoutineInput");
-      const nextName = (input?.value || "").trim();
-      if (!nextName) {
-        showToast("Escribe un nombre válido");
-        return;
-      }
-      activeRoutine.name = nextName;
+    function renameRoutine(id) {
+      const routine = state.routines.find(r => r.id === id);
+      if (!routine) return;
+      const nextName = prompt('Nuevo nombre para la rutina:', routine.name);
+      if (!nextName || !nextName.trim()) return;
+      routine.name = nextName.trim();
       saveState();
-      renderAll();
-      showToast("Rutina renombrada");
+      showToast('Nombre de rutina actualizado');
     }
 
-    function deleteActiveRoutine() {
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) return;
-      const deletedId = activeRoutine.id;
-      const deletedName = activeRoutine.name;
-      state.routines = state.routines.filter((r) => r.id !== deletedId);
-      delete state.draftExercisesByRoutine[deletedId];
-      delete state.lastByRoutine[deletedId];
-      state.activeRoutineId = state.routines[0]?.id || null;
-      state.manualRoutineOverride = false;
-      saveState();
-      renderAll();
-      showToast(`Rutina "${deletedName}" eliminada`);
+    function renameActiveRoutinePrompt() {
+      if (!state.selectedRoutineId) return;
+      renameRoutine(state.selectedRoutineId);
     }
 
-    function renderHistory() {
-      const container = document.getElementById("historyContainer");
-      container.innerHTML = "";
-
-      const combined = [];
-      (state.history || []).forEach((h) => {
-        combined.push({
-          kind: "workout",
-          sortKey: `${h.date || ""}_${(h.id || "").split("_")[0] || "0"}`,
-          data: h
-        });
-      });
-      (state.weightLogs || []).forEach((w) => {
-        combined.push({
-          kind: "weight",
-          sortKey: `${w.date || ""}_${(w.id || "").split("_")[1] || "0"}`,
-          data: w
-        });
-      });
-
-      combined.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
-
-      if (!combined.length) {
-        container.innerHTML = `<div class="empty-state">Aún no hay entrenamientos ni pesajes guardados en este bloque.</div>`;
-        return;
-      }
-
-      combined.forEach((item) => {
-        if (item.kind === "weight") {
-          const w = item.data;
-          const card = document.createElement("article");
-          card.className = "history-card";
-          card.innerHTML = `
-            <div class="history-top">
-              <div>
-                <div class="history-title">Pesaje rápido · ${w.weight} kg</div>
-                <div class="history-meta">${w.date || ""} · ${formatNutrition(w.nutrition)} · Sin sesión</div>
-              </div>
-              <div class="history-actions">
-                <button type="button" class="danger-btn" data-del-weight="${w.id}">Borrar</button>
-              </div>
-            </div>
-          `;
-          card.querySelector("[data-del-weight]").addEventListener("click", () => {
-            state.weightLogs = state.weightLogs.filter((x) => x.id !== w.id);
-            saveState();
-            renderHistory();
-            showToast("Pesaje eliminado");
-          });
-          container.appendChild(card);
-          return;
-        }
-
-        const entry = item.data;
-        const card = document.createElement("article");
-        card.className = "history-card";
-
-        const top = document.createElement("div");
-        top.className = "history-top";
-
-        const info = document.createElement("div");
-        const title = document.createElement("div");
-        title.className = "history-title";
-        title.textContent = `#${entry.sessionNumber} · ${entry.routineName || entry.routine || "Rutina"}`;
-
-        const weightText = entry.weight !== "" && entry.weight != null ? ` · ${entry.weight} kg` : "";
-        const meta = document.createElement("div");
-        meta.className = "history-meta";
-        meta.textContent = `${entry.date || ""} · ${formatNutrition(entry.nutrition)}${weightText}`;
-
-        info.appendChild(title);
-        info.appendChild(meta);
-
-        const actions = document.createElement("div");
-        actions.className = "history-actions";
-
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.className = "secondary-btn";
-        editBtn.textContent = "Editar";
-        editBtn.addEventListener("click", () => openEditHistoryModal(entry.id));
-
-        const delBtn = document.createElement("button");
-        delBtn.type = "button";
-        delBtn.className = "danger-btn";
-        delBtn.textContent = "Borrar";
-        delBtn.addEventListener("click", () => {
-          state.history = state.history.filter((h) => h.id !== entry.id);
-          saveState();
-          renderHistory();
-          showToast("Sesión eliminada");
-        });
-
-        actions.appendChild(editBtn);
-        actions.appendChild(delBtn);
-
-        top.appendChild(info);
-        top.appendChild(actions);
-        card.appendChild(top);
-
-        (entry.exercises || []).forEach((ex) => {
-          const exBlock = document.createElement("div");
-          exBlock.className = "history-ex-block";
-
-          const exName = document.createElement("div");
-          exName.className = "history-ex-name";
-          exName.textContent = ex.name;
-          exBlock.appendChild(exName);
-
-          const validSets = (ex.sets || []).filter(
-            (s) => s.weight !== "" || s.reps !== "" || s.rir !== "" || s.straps || s.wristWraps
-          );
-
-          if (!validSets.length) {
-            const emptyLine = document.createElement("div");
-            emptyLine.className = "history-set-line";
-            emptyLine.textContent = "Sin marcas anotadas";
-            exBlock.appendChild(emptyLine);
-          } else {
-            validSets.forEach((s, idx) => {
-              const line = document.createElement("div");
-              line.className = "history-set-line";
-              const kgPart = s.weight !== "" ? `${s.weight} kg` : "— kg";
-              const repsPart = s.reps !== "" ? `${s.reps} reps` : "— reps";
-              const rirPart = s.rir !== "" ? `RIR ${s.rir}` : "";
-              const gearParts = [];
-              if (s.straps) gearParts.push("Straps");
-              if (s.wristWraps) gearParts.push("Muñequeras");
-              const extra = [rirPart, ...gearParts].filter(Boolean).join(" · ");
-              line.textContent = `S${idx + 1}: ${kgPart} × ${repsPart}${extra ? ` (${extra})` : ""}`;
-              exBlock.appendChild(line);
-            });
-          }
-
-          card.appendChild(exBlock);
-        });
-
-        container.appendChild(card);
-      });
-    }
-
-    function saveCurrentWorkout() {
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) {
-        showToast("Crea primero una rutina para guardar el entreno");
-        return;
-      }
-
-      const currentExercises = (state.draftExercisesByRoutine[activeRoutine.id] || []).map((ex) => ({
-        name: ex.name,
-        sets: cloneSets(ex.sets)
-      }));
-
-      const entry = {
-        id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-        sessionNumber: state.sessionCounter,
-        routine: activeRoutine.id,
-        routineName: activeRoutine.name,
-        date: state.date || getTodayISO(),
-        weight: state.weight,
-        nutrition: state.nutrition,
-        exercises: currentExercises
-      };
-
-      state.history.unshift(entry);
-      state.lastByRoutine[activeRoutine.id] = {
-        date: entry.date,
-        weight: entry.weight,
-        nutrition: entry.nutrition,
-        exercises: currentExercises.map((e) => ({ name: e.name, sets: cloneSets(e.sets) }))
-      };
-
-      state.blockSessionsCount = (Number(state.blockSessionsCount) || 0) + 1;
-      state.sessionCounter = (Number(state.sessionCounter) || 1) + 1;
-
-      if (!state.manualRoutineOverride && state.routines.length > 0) {
-        state.activeRoutineId = getCycleRoutineForSession(state.sessionCounter);
-      }
-      state.date = getTodayISO();
-
-      state.routines.forEach((rObj) => {
-        state.draftExercisesByRoutine[rObj.id] = buildRoutineDraftFromReference(
-          rObj,
-          state.lastByRoutine[rObj.id]
-        );
-      });
-
-      saveState();
-      renderAll();
-      const nextName = getRoutineById(state.activeRoutineId)?.name || "Entrenar";
-      showToast(`Guardado · Siguiente: ${nextName}`);
-    }
-
-    function clearCurrentDraft() {
-      const activeRoutine = getRoutineById(state.activeRoutineId);
-      if (!activeRoutine) return;
-      state.draftExercisesByRoutine[activeRoutine.id] = (activeRoutine.exercises || []).map((name) => ({
-        name,
-        sets: makeDefaultSets(),
-        autofilled: false
-      }));
-      saveState();
-      renderExercises();
-      showToast("Campos limpiados");
-    }
-
-    function openGoalModal() {
-      document.getElementById("goalInput").value = state.goalTarget || 30;
-      document.getElementById("createRoutineModalInput").value = "";
-      renderGoalModalRoutines();
-      document.getElementById("goalModal").classList.add("open");
-    }
-
-    function closeGoalModal() {
-      document.getElementById("goalModal").classList.remove("open");
-    }
-
-    function renderGoalModalRoutines() {
-      const editor = document.getElementById("restructureExercisesEditor");
-      editor.innerHTML = "";
-
-      if (!state.routines.length) {
-        editor.innerHTML = `<div class="empty-state" style="padding:18px;">No hay rutinas todavía. Crea una arriba para empezar.</div>`;
-        return;
-      }
-
-      state.routines.forEach((rObj, rIdx) => {
-        const box = document.createElement("div");
-        box.className = "restructure-routine-box";
-
-        const topRow = document.createElement("div");
-        topRow.className = "add-ex-row";
-
-        const rNameInput = document.createElement("input");
-        rNameInput.className = "input-box";
-        rNameInput.type = "text";
-        rNameInput.value = rObj.name;
-        rNameInput.placeholder = `Nombre rutina ${rIdx + 1}`;
-        rNameInput.dataset.routineNameId = rObj.id;
-
-        const delRBtn = document.createElement("button");
-        delRBtn.type = "button";
-        delRBtn.className = "danger-btn";
-        delRBtn.textContent = "Borrar rutina";
-        delRBtn.addEventListener("click", () => {
-          state.routines = state.routines.filter((item) => item.id !== rObj.id);
-          delete state.draftExercisesByRoutine[rObj.id];
-          delete state.lastByRoutine[rObj.id];
-          if (state.activeRoutineId === rObj.id) {
-            state.activeRoutineId = state.routines[0]?.id || null;
-          }
-          renderGoalModalRoutines();
-        });
-
-        topRow.appendChild(rNameInput);
-        topRow.appendChild(delRBtn);
-        box.appendChild(topRow);
-
-        (rObj.exercises || []).forEach((exName, exIdx) => {
-          const inp = document.createElement("input");
-          inp.className = "input-box";
-          inp.type = "text";
-          inp.value = exName;
-          inp.dataset.routineExId = rObj.id;
-          inp.dataset.exIndex = String(exIdx);
-          box.appendChild(inp);
-        });
-
-        const addExModalRow = document.createElement("div");
-        addExModalRow.className = "add-ex-row";
-        const newExInp = document.createElement("input");
-        newExInp.className = "input-box";
-        newExInp.type = "text";
-        newExInp.placeholder = "Nuevo ejercicio en esta rutina...";
-        const addExBtn = document.createElement("button");
-        addExBtn.type = "button";
-        addExBtn.className = "secondary-btn";
-        addExBtn.textContent = "+ Ejercicio";
-        addExBtn.addEventListener("click", () => {
-          const val = newExInp.value.trim();
-          if (!val) return;
-          rObj.exercises.push(val);
-          renderGoalModalRoutines();
-        });
-        addExModalRow.appendChild(newExInp);
-        addExModalRow.appendChild(addExBtn);
-        box.appendChild(addExModalRow);
-
-        editor.appendChild(box);
-      });
-    }
-
-    function applyGoalAndRoutines(restartBlock) {
-      const targetVal = Math.max(1, parseInt(document.getElementById("goalInput").value, 10) || 30);
-      state.goalTarget = targetVal;
-
-      document.querySelectorAll("#restructureExercisesEditor input[data-routine-name-id]").forEach((inp) => {
-        const rid = inp.dataset.routineNameId;
-        const found = state.routines.find((r) => r.id === rid);
-        if (found) {
-          found.name = inp.value.trim() || found.name || "Rutina";
-        }
-      });
-
-      document.querySelectorAll("#restructureExercisesEditor input[data-routine-ex-id]").forEach((inp) => {
-        const rid = inp.dataset.routineExId;
-        const exIdx = Number(inp.dataset.exIndex);
-        const found = state.routines.find((r) => r.id === rid);
-        if (found && !Number.isNaN(exIdx) && found.exercises[exIdx] !== undefined) {
-          found.exercises[exIdx] = inp.value.trim() || `Ejercicio ${exIdx + 1}`;
-        }
-      });
-
-      if (!state.routines.some((r) => r.id === state.activeRoutineId)) {
-        state.activeRoutineId = state.routines[0]?.id || null;
-      }
-
-      if (restartBlock) {
-        const archive = document.getElementById("archiveBlockCheckbox").checked;
-        if (archive && state.history.length > 0) {
-          state.archivedBlocks.unshift({
-            archivedAt: new Date().toISOString(),
-            goalTarget: state.goalTarget,
-            sessionsCompleted: state.blockSessionsCount,
-            history: state.history
-          });
-        }
-        state.history = [];
-        state.weightLogs = [];
-        state.blockSessionsCount = 0;
-        state.sessionCounter = 1;
-        state.activeRoutineId = getCycleRoutineForSession(1);
-        state.manualRoutineOverride = false;
-        state.lastByRoutine = {};
-        state.draftExercisesByRoutine = {};
-        state.routines.forEach((rObj) => {
-          state.lastByRoutine[rObj.id] = null;
-          state.draftExercisesByRoutine[rObj.id] = (rObj.exercises || []).map((name) => ({
-            name,
-            sets: makeDefaultSets(),
-            autofilled: false
-          }));
-        });
-        showToast("Nuevo bloque iniciado · Entreno #1");
-      } else {
-        state.routines.forEach((rObj) => {
-          state.draftExercisesByRoutine[rObj.id] = buildRoutineDraftFromReference(
-            rObj,
-            state.lastByRoutine[rObj.id]
-          );
-        });
-        showToast("Rutinas y meta guardadas");
-      }
-
-      saveState();
-      closeGoalModal();
-      renderAll();
-    }
-
-    function openEditHistoryModal(entryId) {
-      const target = state.history.find((h) => h.id === entryId);
-      if (!target) return;
-
-      editingHistoryId = entryId;
-      editingDraftData = {
-        date: target.date || getTodayISO(),
-        weight: target.weight ?? "",
-        nutrition: target.nutrition || "fasted",
-        exercises: (target.exercises || []).map((ex) => ({
-          name: ex.name,
-          sets: cloneSets(ex.sets)
-        }))
-      };
-
-      document.getElementById("editHistoryTitle").textContent =
-        `Editar #${target.sessionNumber} · ${target.routineName || target.routine || "Rutina"}`;
-      document.getElementById("editDateInput").value = editingDraftData.date;
-      document.getElementById("editWeightInput").value = editingDraftData.weight;
-      syncEditNutritionButtons();
-      renderEditHistoryExercises();
-
-      document.getElementById("editHistoryModal").classList.add("open");
-    }
-
-    function closeEditHistoryModal() {
-      editingHistoryId = null;
-      editingDraftData = null;
-      document.getElementById("editHistoryModal").classList.remove("open");
-    }
-
-    function syncEditNutritionButtons() {
-      if (!editingDraftData) return;
-      document.getElementById("editFastedBtn").classList.toggle("active", editingDraftData.nutrition !== "fed");
-      document.getElementById("editFedBtn").classList.toggle("active", editingDraftData.nutrition === "fed");
-    }
-
-    function renderEditHistoryExercises() {
-      const container = document.getElementById("editExercisesContainer");
-      container.innerHTML = "";
-      if (!editingDraftData) return;
-
-      editingDraftData.exercises.forEach((ex) => {
-        const box = document.createElement("div");
-        box.className = "restructure-routine-box";
-
-        const exNameInput = document.createElement("input");
-        exNameInput.className = "input-box";
-        exNameInput.type = "text";
-        exNameInput.value = ex.name;
-        exNameInput.addEventListener("input", (e) => {
-          ex.name = e.target.value;
-        });
-        box.appendChild(exNameInput);
-
-        ex.sets.forEach((s, sIdx) => {
-          const row = document.createElement("div");
-          row.className = "set-row";
-
-          const num = document.createElement("span");
-          num.className = "set-num";
-          num.textContent = `${sIdx + 1}`;
-
-          const kg = document.createElement("input");
-          kg.className = "set-input";
-          kg.type = "number";
-          kg.step = "0.5";
-          kg.inputmode = "decimal";
-          kg.placeholder = "kg";
-          kg.value = s.weight ?? "";
-          kg.addEventListener("input", (e) => {
-            s.weight = e.target.value;
-          });
-
-          const reps = document.createElement("input");
-          reps.className = "set-input";
-          reps.type = "number";
-          reps.step = "1";
-          reps.inputmode = "numeric";
-          reps.placeholder = "reps";
-          reps.value = s.reps ?? "";
-          reps.addEventListener("input", (e) => {
-            s.reps = e.target.value;
-          });
-
-          const rir = document.createElement("input");
-          rir.className = "set-input";
-          rir.type = "number";
-          rir.step = "0.5";
-          rir.inputmode = "decimal";
-          rir.placeholder = "RIR";
-          rir.value = s.rir ?? "";
-          rir.addEventListener("input", (e) => {
-            s.rir = e.target.value;
-          });
-
-          const gear = document.createElement("div");
-          gear.className = "gear-group";
-
-          const st = document.createElement("button");
-          st.type = "button";
-          st.className = `gear-chip ${s.straps ? "active" : ""}`;
-          st.textContent = "S";
-          st.addEventListener("click", () => {
-            s.straps = !s.straps;
-            renderEditHistoryExercises();
-          });
-
-          const wr = document.createElement("button");
-          wr.type = "button";
-          wr.className = `gear-chip ${s.wristWraps ? "active" : ""}`;
-          wr.textContent = "M";
-          wr.addEventListener("click", () => {
-            s.wristWraps = !s.wristWraps;
-            renderEditHistoryExercises();
-          });
-
-          const rm = document.createElement("button");
-          rm.type = "button";
-          rm.className = "del-set-btn";
-          rm.textContent = "×";
-          rm.addEventListener("click", () => {
-            if (ex.sets.length > 1) {
-              ex.sets.splice(sIdx, 1);
-              renderEditHistoryExercises();
-            }
-          });
-
-          gear.appendChild(st);
-          gear.appendChild(wr);
-          gear.appendChild(rm);
-
-          row.appendChild(num);
-          row.appendChild(kg);
-          row.appendChild(reps);
-          row.appendChild(rir);
-          row.appendChild(gear);
-          box.appendChild(row);
-        });
-
-        const addBtn = document.createElement("button");
-        addBtn.type = "button";
-        addBtn.className = "secondary-btn";
-        addBtn.textContent = "+ Añadir serie";
-        addBtn.addEventListener("click", () => {
-          ex.sets.push({ weight: "", reps: "", rir: "", straps: false, wristWraps: false });
-          renderEditHistoryExercises();
-        });
-        box.appendChild(addBtn);
-
-        container.appendChild(box);
-      });
-    }
-
-    function saveEditedHistoryEntry() {
-      if (!editingHistoryId || !editingDraftData) return;
-      const idx = state.history.findIndex((h) => h.id === editingHistoryId);
-      if (idx === -1) return;
-
-      const updated = {
-        ...state.history[idx],
-        date: document.getElementById("editDateInput").value || getTodayISO(),
-        weight: document.getElementById("editWeightInput").value,
-        nutrition: editingDraftData.nutrition,
-        exercises: editingDraftData.exercises.map((ex, i) => ({
-          name: ex.name.trim() || state.history[idx].exercises[i]?.name || "Ejercicio",
-          sets: cloneSets(ex.sets)
-        }))
-      };
-
-      state.history[idx] = updated;
-
-      const routineKey = updated.routine;
-      const rObj = getRoutineById(routineKey);
-      if (rObj && state.history.filter((h) => h.routine === routineKey)[0]?.id === updated.id) {
-        state.lastByRoutine[routineKey] = {
-          date: updated.date,
-          weight: updated.weight,
-          nutrition: updated.nutrition,
-          exercises: updated.exercises.map((e) => ({ name: e.name, sets: cloneSets(e.sets) }))
-        };
-        state.draftExercisesByRoutine[routineKey] = buildRoutineDraftFromReference(
-          rObj,
-          state.lastByRoutine[routineKey]
-        );
-      }
-
-      saveState();
-      closeEditHistoryModal();
-      renderAll();
-      showToast("Cambios guardados en historial");
-    }
-
-    function saveOnlyWeight() {
-      const quickInput = document.getElementById("quickWeightInput");
-      const rawVal = (quickInput?.value || "").trim();
-      const parsedWeight = parseFloat(rawVal.replace(",", "."));
-      if (!rawVal || Number.isNaN(parsedWeight) || parsedWeight <= 0) {
-        showToast("Escribe un peso válido (ej. 76.5)");
-        quickInput?.focus();
-        return;
-      }
-
-      const logEntry = {
-        id: `w_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-        type: "weight_only",
-        date: state.date || getTodayISO(),
-        weight: parsedWeight,
-        nutrition: state.nutrition || "fasted"
-      };
-
-      state.weightLogs.unshift(logEntry);
-      state.weight = String(parsedWeight);
-      selectedBodyWeightIndex = null;
-      if (quickInput) quickInput.value = "";
-      document.getElementById("weightInput").value = state.weight;
-      saveState();
-      if (currentView === "charts") renderCharts();
-      showToast(`Peso guardado: ${parsedWeight} kg`);
-    }
-
-    function getAllBodyWeightPoints() {
-      const points = [];
-      (state.weightLogs || []).forEach((w) => {
-        const val = parseFloat(String(w.weight).replace(",", "."));
-        if (!Number.isNaN(val) && val > 0) {
-          points.push({
-            date: w.date || getTodayISO(),
-            weight: val,
-            label: "Pesaje rápido",
-            nutrition: formatNutrition(w.nutrition),
-            ts: Number((w.id || "").split("_")[1]) || 0
-          });
-        }
-      });
-      (state.history || []).forEach((h) => {
-        const val = parseFloat(String(h.weight ?? "").replace(",", "."));
-        if (!Number.isNaN(val) && val > 0) {
-          points.push({
-            date: h.date || getTodayISO(),
-            weight: val,
-            label: `Sesión #${h.sessionNumber}`,
-            nutrition: formatNutrition(h.nutrition),
-            ts: Number((h.id || "").split("_")[0]) || 0
-          });
-        }
-      });
-      points.sort((a, b) => {
-        if (a.date !== b.date) return a.date.localeCompare(b.date);
-        return a.ts - b.ts;
-      });
-      return points;
-    }
-
-    function getAllExercisesHistoryMap() {
-      const map = new Map();
-      const chronological = [...(state.history || [])].reverse();
-
-      chronological.forEach((session) => {
-        (session.exercises || []).forEach((ex) => {
-          const cleanName = (ex.name || "").trim();
-          if (!cleanName) return;
-          let topKg = null;
-          let totalReps = 0;
-          let totalVolume = 0;
-          let lastSetDesc = "";
-
-          (ex.sets || []).forEach((s) => {
-            const kg = parseFloat(String(s.weight ?? "").replace(",", "."));
-            const reps = parseFloat(String(s.reps ?? "").replace(",", "."));
-            if (!Number.isNaN(kg) && kg > 0) {
-              if (topKg === null || kg > topKg) topKg = kg;
-              if (!Number.isNaN(reps) && reps > 0) {
-                totalVolume += kg * reps;
-              }
-            }
-            if (!Number.isNaN(reps) && reps > 0) {
-              totalReps += reps;
-              const rirStr = s.rir !== "" && s.rir != null ? ` · RIR ${s.rir}` : "";
-              lastSetDesc = `${kg || "—"} kg × ${reps}${rirStr}`;
-            }
-          });
-
-          if (topKg !== null || totalReps > 0) {
-            if (!map.has(cleanName)) map.set(cleanName, []);
-            map.get(cleanName).push({
-              date: session.date || "",
-              sessionNumber: session.sessionNumber,
-              topKg: topKg ?? 0,
-              volume: Math.round(totalVolume),
-              summarySet: lastSetDesc || `${topKg ?? 0} kg`
-            });
-          }
-        });
-      });
-
-      return map;
-    }
-
-    function drawLineChart(svgEl, values, options = {}) {
-      if (!svgEl) return;
-      const width = 500;
-      const height = 170;
-      const padX = 24;
-      const padY = 22;
-
-      if (!Array.isArray(values) || values.length === 0) {
-        svgEl.innerHTML = `<text x="250" y="90" text-anchor="middle" fill="#666672" font-size="13" font-family="sans-serif">Sin datos suficientes todavía</text>`;
-        return;
-      }
-
-      if (values.length === 1) {
-        const yMid = height / 2;
-        const xMid = width / 2;
-        svgEl.innerHTML = `
-          <line x1="${padX}" y1="${yMid}" x2="${width - padX}" y2="${yMid}" stroke="#27272e" stroke-dasharray="4 4" stroke-width="1" />
-          <circle cx="${xMid}" cy="${yMid}" r="6" fill="#22c55e" style="cursor:pointer;" data-point-idx="0" />
-          <text x="${xMid}" y="${yMid - 12}" text-anchor="middle" fill="#f4f4f6" font-size="12" font-weight="700" font-family="monospace">${values[0]} ${options.unit || ""}</text>
-        `;
-        bindChartPointClicks(svgEl, options.onSelectPoint);
-        return;
-      }
-
-      const minVal = Math.min(...values);
-      const maxVal = Math.max(...values);
-      const span = maxVal - minVal || 1;
-      const innerW = width - padX * 2;
-      const innerH = height - padY * 2;
-
-      const coords = values.map((val, idx) => {
-        const x = padX + (idx / (values.length - 1)) * innerW;
-        const norm = (val - minVal) / span;
-        const y = padY + (1 - norm) * innerH;
-        return { x, y, val };
-      });
-
-      const linePath = coords.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
-      const areaPath = `${linePath} L ${coords[coords.length - 1].x.toFixed(1)} ${(height - padY).toFixed(1)} L ${coords[0].x.toFixed(1)} ${(height - padY).toFixed(1)} Z`;
-
-      const activeIdx =
-        typeof options.activeIndex === "number" && options.activeIndex >= 0 && options.activeIndex < coords.length
-          ? options.activeIndex
-          : coords.length - 1;
-
-      const firstVal = coords[0].val;
-      const lastVal = coords[coords.length - 1].val;
-      const yFirst = padY + (1 - (firstVal - minVal) / span) * innerH;
-      const yLast = padY + (1 - (lastVal - minVal) / span) * innerH;
-
-      const dotsSvg = coords
-        .map((p, idx) => {
-          const isSelected = idx === activeIdx;
-          return `
-            <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="10" fill="transparent" style="cursor:pointer;" data-point-idx="${idx}" />
-            <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${isSelected ? 5 : 3}" fill="${isSelected ? "#22c55e" : "#f4f4f6"}" pointer-events="none" />
-          `;
-        })
-        .join("");
-
-      svgEl.innerHTML = `
-        <defs>
-          <linearGradient id="greenAreaGrad_${svgEl.id}" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#22c55e" stop-opacity="0.28" />
-            <stop offset="100%" stop-color="#22c55e" stop-opacity="0.0" />
-          </linearGradient>
-        </defs>
-        <line x1="${padX}" y1="${padY}" x2="${width - padX}" y2="${padY}" stroke="#27272e" stroke-width="1" />
-        <line x1="${padX}" y1="${height - padY}" x2="${width - padX}" y2="${height - padY}" stroke="#27272e" stroke-width="1" />
-        <path d="${areaPath}" fill="url(#greenAreaGrad_${svgEl.id})" />
-        <path d="${linePath}" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        ${dotsSvg}
-        <text x="${padX}" y="${Math.max(12, yFirst - 7).toFixed(1)}" fill="#9a9aa6" font-size="10" font-family="monospace">${firstVal}${options.unit || ""}</text>
-        <text x="${width - padX}" y="${Math.max(12, yLast - 7).toFixed(1)}" text-anchor="end" fill="#22c55e" font-size="11" font-weight="700" font-family="monospace">${lastVal}${options.unit || ""}</text>
-      `;
-
-      bindChartPointClicks(svgEl, options.onSelectPoint);
-    }
-
-    function bindChartPointClicks(svgEl, callback) {
-      if (typeof callback !== "function") return;
-      svgEl.querySelectorAll("[data-point-idx]").forEach((el) => {
-        el.addEventListener("click", () => {
-          const idx = Number(el.dataset.pointIdx);
-          if (!Number.isNaN(idx)) callback(idx);
-        });
-      });
-    }
-
-    function renderCharts() {
-      const bwPoints = getAllBodyWeightPoints();
-      const bwSvg = document.getElementById("bodyWeightChartSvg");
-      const bwBadge = document.getElementById("bodyWeightDeltaBadge");
-      const bwSub = document.getElementById("bodyWeightChartSub");
-      const bwReadout = document.getElementById("bodyWeightPointReadout");
-
-      const activeBwIdx =
-        bwPoints.length === 0
-          ? -1
-          : selectedBodyWeightIndex !== null && selectedBodyWeightIndex < bwPoints.length
-          ? selectedBodyWeightIndex
-          : bwPoints.length - 1;
-
-      drawLineChart(
-        bwSvg,
-        bwPoints.map((p) => p.weight),
+    function addStarterRoutines() {
+      const templates = [
         {
-          unit: " kg",
-          activeIndex: activeBwIdx,
-          onSelectPoint: (idx) => {
-            selectedBodyWeightIndex = idx;
-            renderCharts();
-          }
+          id: 'r_torso_' + Date.now(),
+          name: 'Torso',
+          exercises: [
+            { id: 'e1', name: 'Press banca', sets: [{ kg: '', reps: '' }, { kg: '', reps: '' }, { kg: '', reps: '' }] },
+            { id: 'e2', name: 'Remo con barra', sets: [{ kg: '', reps: '' }, { kg: '', reps: '' }, { kg: '', reps: '' }] }
+          ]
+        },
+        {
+          id: 'r_pierna_' + (Date.now() + 1),
+          name: 'Pierna',
+          exercises: [
+            { id: 'e3', name: 'Sentadilla', sets: [{ kg: '', reps: '' }, { kg: '', reps: '' }, { kg: '', reps: '' }] },
+            { id: 'e4', name: 'Peso muerto rumano', sets: [{ kg: '', reps: '' }, { kg: '', reps: '' }, { kg: '', reps: '' }] }
+          ]
         }
-      );
+      ];
+      state.routines.push(...templates);
+      if (!state.selectedRoutineId) state.selectedRoutineId = templates[0].id;
+      saveState();
+      showToast('Plantillas añadidas');
+    }
 
-      if (bwPoints.length >= 2) {
-        const diff = +(bwPoints[bwPoints.length - 1].weight - bwPoints[0].weight).toFixed(1);
-        const sign = diff > 0 ? "+" : "";
-        bwBadge.textContent = `${sign}${diff} kg (${bwPoints[bwPoints.length - 1].weight} kg)`;
-        bwSub.textContent = `${bwPoints.length} registros · ${bwPoints[0].date} → ${bwPoints[bwPoints.length - 1].date}`;
-      } else if (bwPoints.length === 1) {
-        bwBadge.textContent = `${bwPoints[0].weight} kg`;
-        bwSub.textContent = `1 registro · ${bwPoints[0].date}`;
-      } else {
-        bwBadge.textContent = "Sin peso";
-        bwSub.textContent = "Usa 'Subir peso' o guarda un entreno con peso";
+    function selectRoutine(id) {
+      state.selectedRoutineId = id;
+      saveState();
+    }
+
+    function deleteRoutine(id) {
+      const target = state.routines.find(r => r.id === id);
+      if (!target) return;
+      if (!confirm(`¿Borrar la rutina "${target.name}"?`)) return;
+      state.routines = state.routines.filter(r => r.id !== id);
+      if (state.selectedRoutineId === id) {
+        state.selectedRoutineId = state.routines[0]?.id || null;
       }
+      saveState();
+      showToast('Rutina borrada');
+    }
 
-      if (activeBwIdx >= 0 && bwPoints[activeBwIdx]) {
-        const pt = bwPoints[activeBwIdx];
-        bwReadout.innerHTML = `
-          <span>${pt.date} · ${pt.label} (${pt.nutrition})</span>
-          <strong style="color:#f4f4f6;">${pt.weight} kg</strong>
-        `;
-      } else {
-        bwReadout.innerHTML = `<span>Sin registros de peso</span><span>—</span>`;
-      }
-
-      const exMap = getAllExercisesHistoryMap();
-      const selectEl = document.getElementById("exerciseProgressSelect");
-      const names = Array.from(exMap.keys());
-      const exBadge = document.getElementById("exerciseDeltaBadge");
-      const exSub = document.getElementById("exerciseChartSub");
-      const exReadout = document.getElementById("exercisePointReadout");
-
-      document.getElementById("metricTopKgBtn").classList.toggle("active", progressMetricMode === "topKg");
-      document.getElementById("metricVolumeBtn").classList.toggle("active", progressMetricMode === "volume");
-
-      if (!names.length) {
-        selectEl.innerHTML = `<option value="">Aún no hay entrenos con marcas</option>`;
-        drawLineChart(document.getElementById("exerciseChartSvg"), [], { unit: "" });
-        exBadge.textContent = "Sin marcas";
-        exSub.textContent = "Guarda una sesión para ver progresión en máquinas o ejercicios";
-        exReadout.innerHTML = `<span>Sin marcas registradas</span><span>—</span>`;
-      } else {
-        if (!selectedProgressExercise || !exMap.has(selectedProgressExercise)) {
-          selectedProgressExercise = names[0];
-          selectedExercisePointIndex = null;
-        }
-        selectEl.innerHTML = names
-          .map((n) => `<option value="${n.replace(/"/g, "&quot;")}" ${n === selectedProgressExercise ? "selected" : ""}>${n}</option>`)
-          .join("");
-
-        const series = exMap.get(selectedProgressExercise) || [];
-        const isVol = progressMetricMode === "volume";
-        const metricSeries = series.map((s) => (isVol ? s.volume : s.topKg));
-        const unitLabel = isVol ? " kg·r" : " kg";
-        const activeExIdx =
-          selectedExercisePointIndex !== null && selectedExercisePointIndex < series.length
-            ? selectedExercisePointIndex
-            : series.length - 1;
-
-        drawLineChart(document.getElementById("exerciseChartSvg"), metricSeries, {
-          unit: unitLabel,
-          activeIndex: activeExIdx,
-          onSelectPoint: (idx) => {
-            selectedExercisePointIndex = idx;
-            renderCharts();
-          }
-        });
-
-        const diff = metricSeries.length >= 2 ? +(metricSeries[metricSeries.length - 1] - metricSeries[0]).toFixed(1) : 0;
-        const sign = diff > 0 ? "+" : "";
-        exBadge.textContent =
-          metricSeries.length >= 2
-            ? `${sign}${diff}${unitLabel}`
-            : `${metricSeries[0]}${unitLabel}`;
-        exSub.textContent = `${series.length} sesiones · ${selectedProgressExercise}`;
-
-        const allTops = series.map((x) => x.topKg);
-        const bestTop = Math.max(...allTops);
-        const chosenSession = series[activeExIdx] || series[series.length - 1];
-        exReadout.innerHTML = `
-          <span>${chosenSession.date} (#${chosenSession.sessionNumber}) · ${chosenSession.summarySet}</span>
-          <strong style="color:#22c55e;">Récord: ${bestTop} kg</strong>
-        `;
-      }
-
-      const summaryList = document.getElementById("progressSummaryList");
-      summaryList.innerHTML = "";
-
-      if (bwPoints.length >= 1) {
-        const bwDiff = bwPoints.length >= 2 ? +(bwPoints[bwPoints.length - 1].weight - bwPoints[0].weight).toFixed(1) : 0;
-        const bwItem = document.createElement("div");
-        bwItem.className = "prog-item";
-        bwItem.innerHTML = `
-          <div>
-            <div class="prog-item-name">Peso corporal</div>
-            <div class="prog-item-detail">Inicio ${bwPoints[0].weight} kg · Actual ${bwPoints[bwPoints.length - 1].weight} kg</div>
-          </div>
-          <div class="prog-item-delta ${bwDiff > 0 ? "delta-pos" : bwDiff < 0 ? "delta-neg" : "delta-neutral"}">${bwPoints.length >= 2 ? `${bwDiff > 0 ? "+" : ""}${bwDiff} kg` : "Base"}</div>
-        `;
-        summaryList.appendChild(bwItem);
-      }
-
-      names.forEach((exName) => {
-        const items = exMap.get(exName) || [];
-        if (!items.length) return;
-        const firstKg = items[0].topKg;
-        const lastKg = items[items.length - 1].topKg;
-        const diffKg = +(lastKg - firstKg).toFixed(1);
-
-        const row = document.createElement("div");
-        row.className = "prog-item";
-        row.innerHTML = `
-          <div>
-            <div class="prog-item-name">${exName}</div>
-            <div class="prog-item-detail">Inicial ${firstKg} kg · Último top ${lastKg} kg (${items.length} ses.)</div>
-          </div>
-          <div class="prog-item-delta ${diffKg > 0 ? "delta-pos" : diffKg < 0 ? "delta-neg" : "delta-neutral"}">${items.length >= 2 ? `${diffKg > 0 ? "+" : ""}${diffKg} kg` : `${lastKg} kg`}</div>
-        `;
-        summaryList.appendChild(row);
+    function addExercisePrompt() {
+      const routine = state.routines.find(r => r.id === state.selectedRoutineId);
+      if (!routine) return;
+      const name = prompt('Nombre del ejercicio:');
+      if (!name || !name.trim()) return;
+      routine.exercises.push({
+        id: 'ex_' + Date.now(),
+        name: name.trim(),
+        sets: [{ kg: '', reps: '' }, { kg: '', reps: '' }]
       });
+      saveState();
+      showToast('Ejercicio añadido');
+    }
 
-      if (!summaryList.children.length) {
-        summaryList.innerHTML = `<div class="empty-state">Registra tu peso o completa entrenamientos para ver tu evolución.</div>`;
+    function renameExercise(exId) {
+      const routine = state.routines.find(r => r.id === state.selectedRoutineId);
+      const ex = routine?.exercises.find(e => e.id === exId);
+      if (!ex) return;
+      const nextName = prompt('Nuevo nombre para el ejercicio:', ex.name);
+      if (!nextName || !nextName.trim()) return;
+      ex.name = nextName.trim();
+      saveState();
+      showToast('Ejercicio renombrado');
+    }
+
+    function deleteExercise(exId) {
+      const routine = state.routines.find(r => r.id === state.selectedRoutineId);
+      if (!routine) return;
+      routine.exercises = routine.exercises.filter(e => e.id !== exId);
+      saveState();
+    }
+
+    function addSet(exId) {
+      const routine = state.routines.find(r => r.id === state.selectedRoutineId);
+      const ex = routine?.exercises.find(e => e.id === exId);
+      if (!ex) return;
+      ex.sets.push({ kg: '', reps: '' });
+      saveState();
+    }
+
+    function updateSet(exId, idx, field, val) {
+      const routine = state.routines.find(r => r.id === state.selectedRoutineId);
+      const ex = routine?.exercises.find(e => e.id === exId);
+      if (!ex || !ex.sets[idx]) return;
+      ex.sets[idx][field] = val;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function saveWorkoutSession() {
+      const routine = state.routines.find(r => r.id === state.selectedRoutineId);
+      state.history.unshift({
+        id: 'h_' + Date.now(),
+        date: state.date,
+        weight: state.weight || null,
+        nutriState: state.nutriState,
+        routineName: routine ? routine.name : 'Sin rutina'
+      });
+      saveState();
+      showToast('Sesión guardada en historial');
+    }
+
+    function clearHistory() {
+      if (!confirm('¿Borrar todo el historial de sesiones?')) return;
+      state.history = [];
+      saveState();
+      showToast('Historial borrado');
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `entreno-minimal-v2-${state.date}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Copia exportada');
+    }
+
+    function importData(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          state = { ...structuredClone(defaultState), ...parsed };
+          saveState();
+          showToast('Datos importados');
+        } catch {
+          showToast('Archivo no válido');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function switchTab(tab) {
+      ['train', 'history'].forEach(t => {
+        document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
+        document.getElementById('nav-' + t).classList.toggle('active', t === tab);
+      });
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2000);
+    }
+
+    function updateStatus() {
+      const p = state.weight ? `${state.weight} kg · ${state.nutriState}` : state.nutriState;
+      document.getElementById('statusText').textContent = `${state.date} · ${p}`;
+    }
+
+    function render() {
+      document.getElementById('dateInput').value = state.date;
+      document.getElementById('weightInput').value = state.weight;
+      document.getElementById('state-fasted').classList.toggle('active', state.nutriState === 'En ayunas');
+      document.getElementById('state-fed').classList.toggle('active', state.nutriState === 'Después de comer');
+      updateStatus();
+
+      const rContainer = document.getElementById('routinesContainer');
+      if (!state.routines.length) {
+        rContainer.innerHTML = `<div class="empty"><span>Aún no tienes rutinas creadas.</span></div>`;
+      } else {
+        rContainer.innerHTML = state.routines.map(r => `
+          <div class="routine-item ${r.id === state.selectedRoutineId ? 'selected' : ''}">
+            <div class="routine-name" onclick="selectRoutine('${r.id}')">
+              <div>${escapeHtml(r.name)}</div>
+              <div class="routine-meta">${r.exercises.length} ejercicio(s)</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-sm" onclick="selectRoutine('${r.id}')">Abrir</button>
+              <button class="btn btn-sm" onclick="renameRoutine('${r.id}')">Renombrar</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteRoutine('${r.id}')">Borrar</button>
+            </div>
+          </div>
+        `).join('');
       }
-    }
 
-    function switchView(viewName) {
-      currentView = viewName;
-      const isWorkout = viewName === "workout";
-      const isHistory = viewName === "history";
-      const isCharts = viewName === "charts";
-      document.getElementById("workoutView").style.display = isWorkout ? "block" : "none";
-      document.getElementById("historyView").style.display = isHistory ? "block" : "none";
-      document.getElementById("chartsView").style.display = isCharts ? "block" : "none";
-      document.getElementById("navWorkoutBtn").classList.toggle("active", isWorkout);
-      document.getElementById("navHistoryBtn").classList.toggle("active", isHistory);
-      document.getElementById("navChartsBtn").classList.toggle("active", isCharts);
-      if (isHistory) {
-        renderHistory();
-      } else if (isCharts) {
-        renderCharts();
-      }
-    }
-
-    function renderAll() {
-      renderHeader();
-      renderMetaAndRoutineSelector();
-      renderExercises();
-      if (currentView === "history") {
-        renderHistory();
-      } else if (isChartsView()) {
-        renderCharts();
-      }
-    }
-
-    function isChartsView() {
-      return currentView === "charts";
-    }
-
-    function setupPwaManifest() {
-      try {
-        const manifest = {
-          name: "Entreno Minimal",
-          short_name: "Entreno Minimal",
-          start_url: ".",
-          display: "standalone",
-          background_color: "#09090b",
-          theme_color: "#09090b"
-        };
-        const blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });
-        const url = URL.createObjectURL(blob);
-        const link = document.getElementById("pwa-manifest-link");
-        if (link) link.href = url;
-      } catch (e) {}
-    }
-
-    document.getElementById("dateInput").addEventListener("change", (e) => {
-      state.date = e.target.value;
-      saveState();
-    });
-
-    document.getElementById("weightInput").addEventListener("input", (e) => {
-      state.weight = e.target.value;
-      saveState();
-    });
-
-    document.getElementById("fastedBtn").addEventListener("click", () => {
-      state.nutrition = "fasted";
-      saveState();
-      renderMetaAndRoutineSelector();
-    });
-
-    document.getElementById("fedBtn").addEventListener("click", () => {
-      state.nutrition = "fed";
-      saveState();
-      renderMetaAndRoutineSelector();
-    });
-
-    document.getElementById("resetAutoRoutineBtn").addEventListener("click", () => {
-      state.manualRoutineOverride = false;
-      state.activeRoutineId = getCycleRoutineForSession(state.sessionCounter);
-      saveState();
-      renderAll();
-      const autoName = getRoutineById(state.activeRoutineId)?.name || "Automático";
-      showToast(`Ciclo automático: ${autoName}`);
-    });
-
-    document.getElementById("openNewRoutineQuickBtn").addEventListener("click", openQuickRoutineModal);
-    document.getElementById("closeQuickRoutineModalBtn").addEventListener("click", closeQuickRoutineModal);
-    document.getElementById("confirmQuickRoutineBtn").addEventListener("click", () => {
-      const inp = document.getElementById("quickRoutineNameInput");
-      if (createRoutine(inp.value)) {
-        closeQuickRoutineModal();
-      }
-    });
-    document.getElementById("quickRoutineNameInput").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        if (createRoutine(e.target.value)) {
-          closeQuickRoutineModal();
+      const activeCard = document.getElementById('activeRoutineCard');
+      const activeRoutine = state.routines.find(r => r.id === state.selectedRoutineId);
+      if (!activeRoutine) {
+        activeCard.classList.add('hidden');
+      } else {
+        activeCard.classList.remove('hidden');
+        document.getElementById('activeRoutineTitle').textContent = activeRoutine.name;
+        const exContainer = document.getElementById('exercisesContainer');
+        if (!activeRoutine.exercises.length) {
+          exContainer.innerHTML = `<div class="empty"><span>Añade tu primer ejercicio a esta rutina.</span></div>`;
+        } else {
+          exContainer.innerHTML = activeRoutine.exercises.map(ex => `
+            <div class="ex-card">
+              <div class="row-between">
+                <strong>${escapeHtml(ex.name)}</strong>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button class="btn btn-sm" onclick="renameExercise('${ex.id}')">Renombrar</button>
+                  <button class="btn btn-sm" onclick="addSet('${ex.id}')">+ Serie</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteExercise('${ex.id}')">Quitar</button>
+                </div>
+              </div>
+              ${ex.sets.map((s, idx) => `
+                <div class="set-line">
+                  <span class="set-num">#${idx + 1}</span>
+                  <input type="number" step="0.5" inputmode="decimal" placeholder="kg" value="${escapeHtml(s.kg)}" oninput="updateSet('${ex.id}', ${idx}, 'kg', this.value)" />
+                  <input type="number" inputmode="numeric" placeholder="reps" value="${escapeHtml(s.reps)}" oninput="updateSet('${ex.id}', ${idx}, 'reps', this.value)" />
+                  <span class="routine-meta">serie</span>
+                </div>
+              `).join('')}
+            </div>
+          `).join('');
         }
       }
-    });
 
-    document.getElementById("clearDraftBtn").addEventListener("click", clearCurrentDraft);
-    document.getElementById("saveWorkoutBtn").addEventListener("click", saveCurrentWorkout);
-
-    document.getElementById("navWorkoutBtn").addEventListener("click", () => switchView("workout"));
-    document.getElementById("navHistoryBtn").addEventListener("click", () => switchView("history"));
-    document.getElementById("navChartsBtn").addEventListener("click", () => switchView("charts"));
-
-    document.getElementById("saveOnlyWeightBtn").addEventListener("click", saveOnlyWeight);
-    document.getElementById("quickWeightInput").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        saveOnlyWeight();
+      const hContainer = document.getElementById('historyContainer');
+      if (!state.history.length) {
+        hContainer.innerHTML = `<div class="empty"><span>No hay sesiones registradas todavía.</span></div>`;
+      } else {
+        hContainer.innerHTML = state.history.map(item => `
+          <div class="log-item">
+            <div>
+              <strong>${escapeHtml(item.routineName)}</strong>
+              <div class="routine-meta">${escapeHtml(item.date)} · ${escapeHtml(item.nutriState)}</div>
+            </div>
+            <div class="badge">${item.weight ? escapeHtml(item.weight) + ' kg' : 'Sin peso'}</div>
+          </div>
+        `).join('');
       }
-    });
+    }
 
-    document.getElementById("exerciseProgressSelect").addEventListener("change", (e) => {
-      selectedProgressExercise = e.target.value;
-      selectedExercisePointIndex = null;
-      renderCharts();
-    });
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
 
-    document.getElementById("metricTopKgBtn").addEventListener("click", () => {
-      progressMetricMode = "topKg";
-      renderCharts();
-    });
-
-    document.getElementById("metricVolumeBtn").addEventListener("click", () => {
-      progressMetricMode = "volume";
-      renderCharts();
-    });
-
-    document.getElementById("goalButton").addEventListener("click", openGoalModal);
-    document.getElementById("closeGoalModalBtn").addEventListener("click", closeGoalModal);
-    document.getElementById("createRoutineModalBtn").addEventListener("click", () => {
-      const inp = document.getElementById("createRoutineModalInput");
-      if (createRoutine(inp.value)) {
-        inp.value = "";
-        renderGoalModalRoutines();
-      }
-    });
-    document.getElementById("saveGoalOnlyBtn").addEventListener("click", () => applyGoalAndRoutines(false));
-    document.getElementById("restructureBlockBtn").addEventListener("click", () => applyGoalAndRoutines(true));
-
-    document.getElementById("closeEditHistoryBtn").addEventListener("click", closeEditHistoryModal);
-    document.getElementById("cancelEditHistoryBtn").addEventListener("click", closeEditHistoryModal);
-    document.getElementById("editFastedBtn").addEventListener("click", () => {
-      if (editingDraftData) {
-        editingDraftData.nutrition = "fasted";
-        syncEditNutritionButtons();
-      }
-    });
-    document.getElementById("editFedBtn").addEventListener("click", () => {
-      if (editingDraftData) {
-        editingDraftData.nutrition = "fed";
-        syncEditNutritionButtons();
-      }
-    });
-    document.getElementById("saveEditHistoryBtn").addEventListener("click", saveEditedHistoryEntry);
-
-    document.getElementById("toggleManageExercisesBtn").addEventListener("click", () => {
-      manageExercisesOpen = !manageExercisesOpen;
-      renderRoutineExerciseManager();
-    });
-
-    document.getElementById("addCustomExerciseBtn").addEventListener("click", addCustomExerciseToActiveRoutine);
-    document.getElementById("newExerciseNameInput").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        addCustomExerciseToActiveRoutine();
-      }
-    });
-
-    document.getElementById("renameActiveRoutineBtn").addEventListener("click", renameActiveRoutine);
-    document.getElementById("deleteActiveRoutineBtn").addEventListener("click", deleteActiveRoutine);
-
-    setupPwaManifest();
-    renderAll();
+    render();
   </script>
 </body>
 </html>
