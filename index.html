@@ -166,14 +166,36 @@
       outline: none;
     }
 
-    input[type="date"] {
+  input[type="date"] {
       -webkit-appearance: none;
       appearance: none;
       border-radius: var(--radius-md) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      display: block;
+      line-height: 42px;
     }
 
+    input[type="date"]::-webkit-datetime-edit {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0;
+    }
+
+    input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    input[type="date"]::-webkit-date-and-time-value {
+      text-align: center;
+      margin: 0 auto;
+    }
     input:focus, select:focus {
       border-color: var(--accent);
     }
