@@ -1092,6 +1092,23 @@ input, select, textarea, button {
     gap: 10px !important;
   }
 }
+    @media (max-width: 480px) {
+  .meta-grid > div {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  input[type="date"],
+  input[type="number"],
+  input[type="text"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
   </style>
 </head>
 <body>
